@@ -1,0 +1,139 @@
+---
+import Card from '../ui/Card.astro';
+import Button from '../ui/Button.astro';
+
+interface Snapshot {
+  title: string;
+  decisions: string[];
+  anchor: string;
+}
+
+interface Props {
+  title: string;
+  items: Snapshot[];
+  relatedLabel: string;
+  locale: 'en' | 'es';
+}
+
+const { title, items, relatedLabel, locale } = Astro.props;
+---
+
+<section class="section">
+  <div class="container stack-5">
+    <h2 class="section-title reveal" data-reveal>{title}</h2>
+    <div class="grid-2">
+      {
+        items.map((item, index) => (
+          <Card>
+            <div class="stack-4 reveal snapshot-card" data-reveal style={`--delay:${index * 90}ms`}>
+              <h3>{item.title}</h3>
+              <div class="diagram" aria-hidden="true">
+                <span>APP</span>
+                <span>API</span>
+                <span>DB</span>
+                <span>INT</span>
+              </div>
+              <ul>
+                {item.decisions.map((decision) => <li>{decision}</li>)}
+              </ul>
+              <Button href={`/${locale}/projects#${item.anchor}`} variant="link">
+                {relatedLabel}
+              </Button>
+            </div>
+          </Card>
+        ))
+      }
+    </div>
+  </div>
+</section>
+
+<style>
+  .snapshot-card {
+    transition-delay: var(--delay);
+  }
+
+  ul {
+    margin: 0;
+    padding-left: 1.1rem;
+    color: var(--text-1);
+    display: grid;
+    gap: 0.35rem;
+  }
+
+  .diagram {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 0.8rem;
+    align-items: center;
+  }
+
+  .diagram span {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    text-align: center;
+    border: 1px solid var(--stroke);
+    border-radius: var(--radius-sm);
+    padding: 0.4rem 0.2rem;
+    position: relative;
+    background: color-mix(in srgb, var(--card) 88%, transparent);
+    animation: node-pop 6s var(--motion-ease) infinite;
+  }
+
+  .diagram span::after {
+    content: '';
+    position: absolute;
+    right: -0.56rem;
+    top: 50%;
+    width: 0.5rem;
+    height: 1px;
+    background: linear-gradient(90deg, var(--stroke-strong), transparent);
+    animation: link-flow 2.6s var(--motion-ease) infinite;
+  }
+
+  .diagram span:last-child::after {
+    display: none;
+  }
+
+  .diagram span:nth-child(2) {
+    animation-delay: 0.24s;
+  }
+
+  .diagram span:nth-child(3) {
+    animation-delay: 0.46s;
+  }
+
+  .diagram span:nth-child(4) {
+    animation-delay: 0.68s;
+  }
+
+  @keyframes node-pop {
+    0%,
+    100% {
+      transform: translateY(0);
+      border-color: var(--stroke);
+    }
+    45% {
+      transform: translateY(-1px);
+      border-color: var(--stroke-strong);
+    }
+  }
+
+  @keyframes link-flow {
+    0%,
+    100% {
+      opacity: 0.34;
+      transform: translateX(0);
+    }
+    50% {
+      opacity: 0.78;
+      transform: translateX(1px);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .diagram span,
+    .diagram span::after {
+      animation: none;
+    }
+  }
+</style>

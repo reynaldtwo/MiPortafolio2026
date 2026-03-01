@@ -1,0 +1,54 @@
+---
+import Card from '../ui/Card.astro';
+import Badge from '../ui/Badge.astro';
+
+interface PlaybookCard {
+  title: string;
+  points: string[];
+  chips: string[];
+}
+
+interface Props {
+  title: string;
+  cards: PlaybookCard[];
+}
+
+const { title, cards } = Astro.props;
+---
+
+<section class="section">
+  <div class="container stack-5">
+    <h2 class="section-title reveal" data-reveal>{title}</h2>
+    <div class="grid-3">
+      {
+        cards.map((card, index) => (
+          <Card>
+            <div class="stack-4 reveal playbook-card" data-reveal style={`--delay:${index * 70}ms`}>
+              <h3>{card.title}</h3>
+              <ul>
+                {card.points.map((point) => <li>{point}</li>)}
+              </ul>
+              <div class="chip-row">
+                {card.chips.map((chip) => <Badge>{chip}</Badge>)}
+              </div>
+            </div>
+          </Card>
+        ))
+      }
+    </div>
+  </div>
+</section>
+
+<style>
+  .playbook-card {
+    transition-delay: var(--delay);
+  }
+
+  ul {
+    margin: 0;
+    padding-left: 1.1rem;
+    color: var(--text-1);
+    display: grid;
+    gap: 0.35rem;
+  }
+</style>

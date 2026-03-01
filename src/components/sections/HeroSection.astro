@@ -1,0 +1,226 @@
+---
+import Button from '../ui/Button.astro';
+import Badge from '../ui/Badge.astro';
+import TechConstellation from './TechConstellation.astro';
+
+interface Highlight {
+  value: string;
+  label: string;
+}
+
+interface Props {
+  title: string;
+  subline: string;
+  paragraph: string;
+  chips: string[];
+  primaryCta: { label: string; href: string };
+  secondaryCta: { label: string; href: string };
+  panelTitle?: string;
+  highlights?: Highlight[];
+}
+
+const {
+  title,
+  subline,
+  paragraph,
+  chips,
+  primaryCta,
+  secondaryCta,
+  panelTitle = '',
+  highlights = [],
+} = Astro.props;
+---
+
+<section class="section hero-section">
+  <div class="container hero-grid">
+    <div class="hero-copy stack-5 reveal" data-reveal>
+      <p class="eyebrow">{subline}</p>
+      <h1>{title}</h1>
+      <p class="hero-paragraph">{paragraph}</p>
+
+      <div class="hero-cta">
+        <Button href={primaryCta.href}>{primaryCta.label}</Button>
+        <Button href={secondaryCta.href} variant="secondary">
+          {secondaryCta.label}
+        </Button>
+      </div>
+
+      <div class="chip-row proof-row">
+        {chips.map((chip, index) => (
+          <span style={`--delay:${index * 110}ms`}>
+            <Badge>{chip}</Badge>
+          </span>
+        ))}
+      </div>
+    </div>
+
+    <aside class="hero-panel reveal" data-reveal>
+      <TechConstellation />
+
+      <div class="stats-shell surface">
+        <div class="panel-head">
+          <p>{panelTitle}</p>
+          <span aria-hidden="true">01</span>
+        </div>
+
+        <div class="panel-grid">
+          {highlights.map((item) => (
+            <article class="stat">
+              <p class="value">{item.value}</p>
+              <p class="label">{item.label}</p>
+            </article>
+          ))}
+        </div>
+      </div>
+    </aside>
+  </div>
+</section>
+
+<style>
+  .hero-section {
+    padding-top: clamp(2.2rem, 5vw, 4rem);
+  }
+
+  .hero-grid {
+    display: grid;
+    grid-template-columns: 1.05fr 0.95fr;
+    align-items: start;
+    gap: clamp(1.2rem, 4vw, 2.6rem);
+  }
+
+  .eyebrow {
+    display: inline-flex;
+    width: fit-content;
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    color: var(--accent-2);
+    border: 1px solid color-mix(in srgb, var(--accent-2) 45%, transparent);
+    border-radius: var(--radius-pill);
+    padding: 0.25rem 0.72rem;
+    background: color-mix(in srgb, var(--accent-2) 12%, transparent);
+  }
+
+  .hero-paragraph {
+    max-width: 64ch;
+  }
+
+  .hero-cta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-3);
+  }
+
+  .proof-row > span {
+    opacity: 0;
+    transform: translateY(5px);
+    animation: proof-in 560ms var(--motion-ease) forwards;
+    animation-delay: var(--delay);
+  }
+
+  .hero-panel {
+    display: grid;
+    gap: var(--space-4);
+  }
+
+  .stats-shell {
+    padding: clamp(0.92rem, 2.2vw, 1.14rem);
+    display: grid;
+    gap: var(--space-4);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .stats-shell::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background: linear-gradient(
+      110deg,
+      color-mix(in srgb, var(--accent) 16%, transparent),
+      transparent 54%,
+      color-mix(in srgb, var(--accent-2) 14%, transparent)
+    );
+  }
+
+  .panel-head,
+  .panel-grid {
+    position: relative;
+    z-index: 1;
+  }
+
+  .panel-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-3);
+  }
+
+  .panel-head p {
+    color: var(--text-0);
+    font-weight: 600;
+  }
+
+  .panel-head span {
+    font-family: var(--font-mono);
+    font-size: 0.82rem;
+    color: var(--muted);
+  }
+
+  .panel-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--space-3);
+  }
+
+  .stat {
+    padding: 0.75rem;
+    border-radius: var(--radius-md);
+    border: 1px solid var(--stroke);
+    background: color-mix(in srgb, var(--card) 92%, transparent);
+  }
+
+  .value {
+    margin: 0;
+    color: var(--text-0);
+    font-family: var(--font-heading);
+    font-size: 1.25rem;
+    line-height: 1.1;
+  }
+
+  .label {
+    margin-top: 0.24rem;
+    font-size: 0.84rem;
+  }
+
+  @keyframes proof-in {
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @media (max-width: 960px) {
+    .hero-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .hero-cta a {
+      width: 100%;
+    }
+  }
+
+  @media (max-width: 560px) {
+    .panel-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .proof-row > span {
+      animation: none;
+      opacity: 1;
+      transform: none;
+    }
+  }
+</style>

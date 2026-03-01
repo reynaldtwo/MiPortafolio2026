@@ -1,0 +1,52 @@
+{
+  "name": "mi-portafolio-6k",
+  "type": "module",
+  "version": "0.0.1",
+  "scripts": {
+    "dev": "astro dev --host 127.0.0.1 --port 4321",
+    "build": "astro build",
+    "preview": "astro preview --host 127.0.0.1 --port 4321",
+    "astro": "astro",
+    "typecheck": "astro check",
+    "lint": "eslint .",
+    "format:check": "prettier --check .",
+    "test": "vitest run --coverage",
+    "test:e2e": "playwright test tests/e2e",
+    "test:a11y": "playwright test tests/a11y",
+    "check:i18n": "tsx scripts/check-i18n.ts",
+    "check:schemas": "tsx scripts/check-schemas.ts",
+    "check:links": "cross-env SITE_URL=http://127.0.0.1:4321 npm run build && concurrently -k -s first \"npm run preview\" \"wait-on http://127.0.0.1:4321 && linkinator http://127.0.0.1:4321 --recurse --silent --skip mailto:.* --skip tel:.*\"",
+    "test:lighthouse": "cross-env SITE_URL=http://127.0.0.1:4321 npm run build && concurrently -k -s first \"npm run preview\" \"wait-on http://127.0.0.1:4321 && tsx scripts/check-lighthouse.ts\"",
+    "ci": "npm run lint && npm run typecheck && npm run check:schemas && npm run check:i18n && npm run build && npm run test && npm run test:e2e && npm run test:a11y && npm run check:links && npm run test:lighthouse"
+  },
+  "dependencies": {
+    "@astrojs/sitemap": "^3.7.0",
+    "astro": "^5.17.1",
+    "simple-icons": "^16.10.0",
+    "web-vitals": "^5.1.0",
+    "zod": "^3.25.76"
+  },
+  "devDependencies": {
+    "@astrojs/check": "^0.9.6",
+    "@axe-core/playwright": "^4.11.1",
+    "@lhci/cli": "^0.15.1",
+    "@playwright/test": "^1.58.2",
+    "@typescript-eslint/eslint-plugin": "^8.56.1",
+    "@typescript-eslint/parser": "^8.56.1",
+    "@vitest/coverage-v8": "^4.0.18",
+    "chrome-launcher": "^1.2.1",
+    "concurrently": "^9.2.1",
+    "cross-env": "^10.1.0",
+    "eslint": "^10.0.2",
+    "eslint-plugin-astro": "^1.6.0",
+    "lighthouse": "^13.0.3",
+    "linkinator": "^7.6.1",
+    "playwright": "^1.58.2",
+    "prettier": "^3.8.1",
+    "prettier-plugin-astro": "^0.14.1",
+    "tsx": "^4.21.0",
+    "typescript": "^5.9.3",
+    "vitest": "^4.0.18",
+    "wait-on": "^9.0.4"
+  }
+}

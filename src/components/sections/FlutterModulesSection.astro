@@ -1,0 +1,49 @@
+---
+import Card from '../ui/Card.astro';
+
+interface Module {
+  title: string;
+  points: string[];
+}
+
+interface Props {
+  title: string;
+  items: Module[];
+}
+
+const { title, items } = Astro.props;
+---
+
+<section class="section">
+  <div class="container stack-5">
+    <h2 class="section-title reveal" data-reveal>{title}</h2>
+    <div class="grid-2">
+      {
+        items.map((item, index) => (
+          <Card>
+            <div class="stack-4 reveal module-card" data-reveal style={`--delay:${index * 85}ms`}>
+              <h3>{item.title}</h3>
+              <ul>
+                {item.points.map((point) => <li>{point}</li>)}
+              </ul>
+            </div>
+          </Card>
+        ))
+      }
+    </div>
+  </div>
+</section>
+
+<style>
+  .module-card {
+    transition-delay: var(--delay);
+  }
+
+  ul {
+    margin: 0;
+    padding-left: 1.1rem;
+    color: var(--text-1);
+    display: grid;
+    gap: 0.35rem;
+  }
+</style>

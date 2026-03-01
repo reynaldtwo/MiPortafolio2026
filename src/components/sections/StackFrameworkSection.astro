@@ -1,0 +1,53 @@
+---
+import Card from '../ui/Card.astro';
+import Badge from '../ui/Badge.astro';
+
+interface StackColumn {
+  title: string;
+  why: string;
+  chips: string[];
+  tradeoff: string;
+}
+
+interface Props {
+  title: string;
+  columns: StackColumn[];
+}
+
+const { title, columns } = Astro.props;
+---
+
+<section class="section">
+  <div class="container stack-5">
+    <h2 class="section-title reveal" data-reveal>{title}</h2>
+    <div class="grid-3">
+      {
+        columns.map((column, index) => (
+          <Card>
+            <div class="stack-4 reveal stack-card" data-reveal style={`--delay:${index * 75}ms`}>
+              <h3>{column.title}</h3>
+              <p>{column.why}</p>
+              <div class="chip-row">
+                {column.chips.map((chip) => <Badge>{chip}</Badge>)}
+              </div>
+              <p class="tradeoff">{column.tradeoff}</p>
+            </div>
+          </Card>
+        ))
+      }
+    </div>
+  </div>
+</section>
+
+<style>
+  .stack-card {
+    transition-delay: var(--delay);
+  }
+
+  .tradeoff {
+    font-size: 0.92rem;
+    color: var(--card-text-muted);
+    border-left: 2px solid color-mix(in srgb, var(--accent) 45%, transparent);
+    padding-left: 0.6rem;
+  }
+</style>

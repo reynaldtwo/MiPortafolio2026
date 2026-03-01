@@ -1,0 +1,26 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import ProjectsListSection from '../../components/sections/ProjectsListSection.astro';
+import { getDictionary } from '../../data/i18n';
+import { projects } from '../../data/projects';
+
+const locale = 'en';
+const dict = getDictionary(locale);
+const pathname = '/en/projects/';
+---
+
+<BaseLayout
+  locale={locale}
+  dict={dict}
+  title={dict.meta.projects.title}
+  description={dict.meta.projects.description}
+  pathname={pathname}
+>
+  <section class="section">
+    <div class="container stack-5">
+      <h1 class="reveal" data-reveal>{dict.projects.hero.title}</h1>
+      <p class="section-subtitle reveal" data-reveal>{dict.projects.hero.subline}</p>
+    </div>
+  </section>
+  <ProjectsListSection projects={projects} locale={locale} dict={dict} />
+</BaseLayout>

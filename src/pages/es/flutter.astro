@@ -1,0 +1,47 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import FlutterModulesSection from '../../components/sections/FlutterModulesSection.astro';
+import StrengthsSection from '../../components/sections/StrengthsSection.astro';
+import FeaturedProjectsSection from '../../components/sections/FeaturedProjectsSection.astro';
+import Button from '../../components/ui/Button.astro';
+import { getDictionary } from '../../data/i18n';
+import { projects } from '../../data/projects';
+import { filterProjectsByCategory } from '../../utils/projects';
+
+const locale = 'es';
+const dict = getDictionary(locale);
+const pathname = '/es/flutter/';
+const flutterProjects = filterProjectsByCategory(projects, 'flutter').slice(0, 2);
+---
+
+<BaseLayout
+  locale={locale}
+  dict={dict}
+  title={dict.meta.flutter.title}
+  description={dict.meta.flutter.description}
+  pathname={pathname}
+>
+  <section class="section">
+    <div class="container stack-5">
+      <h1 class="reveal" data-reveal>{dict.flutter.hero.title}</h1>
+      <p class="section-subtitle reveal" data-reveal>{dict.flutter.hero.subline}</p>
+      <div class="reveal" data-reveal>
+        <Button href="/es/projects">{dict.flutter.hero.cta}</Button>
+      </div>
+    </div>
+  </section>
+
+  <FlutterModulesSection title={dict.flutter.modules.title} items={dict.flutter.modules.items} />
+  <StrengthsSection
+    title={dict.flutter.quality.title}
+    paragraph={dict.flutter.quality.paragraph}
+    chips={dict.flutter.quality.chips}
+  />
+  <FeaturedProjectsSection
+    title={dict.flutter.highlights.title}
+    projects={flutterProjects}
+    locale={locale}
+    dict={dict}
+    projectsHref="/es/projects"
+  />
+</BaseLayout>

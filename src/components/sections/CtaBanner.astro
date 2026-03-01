@@ -1,0 +1,74 @@
+---
+import Button from '../ui/Button.astro';
+
+interface Props {
+  title: string;
+  primary: { label: string; href: string; target?: '_blank' | '_self' };
+  secondary: { label: string; href: string; target?: '_blank' | '_self' };
+}
+
+const { title, primary, secondary } = Astro.props;
+---
+
+<section class="section">
+  <div class="container">
+    <div class="banner surface reveal" data-reveal>
+      <div class="stack-4">
+        <h2>{title}</h2>
+        <div class="row">
+          <Button href={primary.href} target={primary.target}>{primary.label}</Button>
+          <Button href={secondary.href} target={secondary.target} variant="secondary">
+            {secondary.label}
+          </Button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .banner {
+    padding: clamp(1.2rem, 3.2vw, 2rem);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .banner::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(circle at 10% 15%, color-mix(in srgb, var(--accent) 24%, transparent), transparent 36%),
+      linear-gradient(120deg, color-mix(in srgb, var(--accent) 16%, transparent), transparent 48%, color-mix(in srgb, var(--accent-2) 16%, transparent));
+    pointer-events: none;
+  }
+
+  .banner::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border: 1px solid color-mix(in srgb, var(--accent) 25%, transparent);
+    border-radius: var(--radius-lg);
+    opacity: 0.55;
+    pointer-events: none;
+  }
+
+  .row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-3);
+    position: relative;
+    z-index: 1;
+  }
+
+  h2 {
+    position: relative;
+    z-index: 1;
+  }
+
+  @media (max-width: 680px) {
+    .row a {
+      width: 100%;
+    }
+  }
+</style>

@@ -1,0 +1,33 @@
+---
+interface Props {
+  active?: boolean;
+}
+
+const { active = false } = Astro.props;
+---
+
+<span class:list={['badge', { active }]}>
+  <slot />
+</span>
+
+<style>
+  .badge {
+    display: inline-flex;
+    align-items: center;
+    border-radius: var(--radius-pill);
+    border: 1px solid var(--stroke);
+    background: color-mix(in srgb, var(--card) 84%, transparent);
+    color: var(--card-text-1);
+    font-size: 0.82rem;
+    font-weight: 600;
+    letter-spacing: 0.01em;
+    padding: 0.34rem 0.72rem;
+    white-space: nowrap;
+  }
+
+  .badge.active {
+    border-color: color-mix(in srgb, var(--accent) 66%, white 34%);
+    background: color-mix(in srgb, var(--accent) 22%, transparent);
+    color: var(--text-0);
+  }
+</style>

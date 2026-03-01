@@ -1,0 +1,45 @@
+---
+import { switchLocalePath } from '../../utils/i18n';
+import type { Locale } from '../../types/content';
+
+interface Props {
+  locale: Locale;
+  pathname: string;
+  label: string;
+}
+
+const { locale, pathname, label } = Astro.props;
+const targetLocale: Locale = locale === 'en' ? 'es' : 'en';
+const targetPath = switchLocalePath(pathname, targetLocale);
+---
+
+<a class="lang-switch" href={targetPath} aria-label={label}>
+  {targetLocale.toUpperCase()}
+</a>
+
+<style>
+  .lang-switch {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 2.7rem;
+    height: 2rem;
+    border-radius: 999px;
+    border: 1px solid var(--stroke);
+    background: color-mix(in srgb, var(--card) 84%, transparent);
+    color: var(--text-0);
+    font-size: 0.77rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    transition:
+      transform var(--motion-fast) var(--motion-ease),
+      border-color var(--motion-fast) var(--motion-ease),
+      background-color var(--motion-fast) var(--motion-ease);
+  }
+
+  .lang-switch:hover {
+    transform: translateY(-1px);
+    border-color: var(--stroke-strong);
+    background: color-mix(in srgb, var(--card) 96%, transparent);
+  }
+</style>

@@ -1,0 +1,116 @@
+---
+interface Props {
+  padded?: boolean;
+}
+
+const { padded = true } = Astro.props;
+---
+
+<article class:list={['card', { padded }]}>
+  <slot />
+</article>
+
+<style>
+  .card {
+    position: relative;
+    overflow: hidden;
+    background: var(--card);
+    color: var(--card-text-1);
+    border: 1px solid var(--stroke);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-soft);
+    backdrop-filter: blur(7px);
+    transition:
+      border-color var(--motion-base) var(--motion-ease),
+      transform var(--motion-base) var(--motion-ease),
+      box-shadow var(--motion-base) var(--motion-ease),
+      background-color var(--motion-base) var(--motion-ease);
+  }
+
+  .card::before {
+    content: '';
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: 190%;
+    height: 420%;
+    background:
+      conic-gradient(
+        from 110deg at 50% 50%,
+        color-mix(in srgb, var(--accent) 56%, var(--card)) 0deg,
+        color-mix(in srgb, var(--accent-2) 50%, var(--card)) 120deg,
+        color-mix(in srgb, var(--accent-warm) 32%, var(--accent) 68%) 240deg,
+        color-mix(in srgb, var(--accent-2) 52%, var(--accent) 48%) 306deg,
+        color-mix(in srgb, var(--accent) 56%, var(--card)) 360deg
+      ),
+      radial-gradient(
+        circle at 50% 50%,
+        color-mix(in srgb, var(--accent) 24%, transparent) 0%,
+        color-mix(in srgb, var(--accent-2) 18%, transparent) 42%,
+        color-mix(in srgb, var(--accent) 8%, transparent) 100%
+      );
+    opacity: 0;
+    transform: translate(-50%, -50%) rotate(0deg) scale(1);
+    transition:
+      opacity var(--motion-base) var(--motion-ease),
+      transform 1100ms var(--motion-ease);
+    pointer-events: none;
+    z-index: 0;
+    will-change: transform, opacity;
+  }
+
+  .card::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      132deg,
+      color-mix(in srgb, var(--accent) 16%, transparent),
+      color-mix(in srgb, var(--accent-2) 14%, transparent) 54%,
+      color-mix(in srgb, var(--accent-warm) 12%, transparent)
+    );
+    opacity: 0;
+    transition: opacity var(--motion-base) var(--motion-ease);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .card > * {
+    position: relative;
+    z-index: 1;
+  }
+
+  .card :where(h1, h2, h3, h4, strong, summary) {
+    color: var(--card-text-0);
+  }
+
+  .card :where(p, li) {
+    color: var(--card-text-1);
+  }
+
+  .card.padded {
+    padding: clamp(1rem, 2.2vw, 1.4rem);
+  }
+
+  .card:hover {
+    transform: translateY(-3px);
+    border-color: var(--stroke-strong);
+    box-shadow: var(--shadow-lift);
+    background: color-mix(in srgb, var(--card) 90%, #ffffff 10%);
+  }
+
+  .card:hover::before {
+    opacity: 0.68;
+    transform: translate(-50%, -50%) rotate(34deg) scale(1.06);
+  }
+
+  .card:hover::after {
+    opacity: 0.24;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .card::before {
+      transition: none;
+    }
+  }
+</style>

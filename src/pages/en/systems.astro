@@ -1,0 +1,49 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import CtaBanner from '../../components/sections/CtaBanner.astro';
+import PlaybookSection from '../../components/sections/PlaybookSection.astro';
+import SnapshotsSection from '../../components/sections/SnapshotsSection.astro';
+import StackFrameworkSection from '../../components/sections/StackFrameworkSection.astro';
+import Button from '../../components/ui/Button.astro';
+import { getDictionary } from '../../data/i18n';
+import { siteConfig } from '../../data/site';
+
+const locale = 'en';
+const dict = getDictionary(locale);
+const pathname = '/en/systems/';
+---
+
+<BaseLayout
+  locale={locale}
+  dict={dict}
+  title={dict.meta.systems.title}
+  description={dict.meta.systems.description}
+  pathname={pathname}
+>
+  <section class="section">
+    <div class="container stack-5">
+      <h1 class="reveal" data-reveal>{dict.systems.hero.title}</h1>
+      <p class="section-subtitle reveal" data-reveal>{dict.systems.hero.subline}</p>
+      <div class="reveal" data-reveal>
+        <Button href="/en/projects">{dict.systems.hero.cta}</Button>
+      </div>
+    </div>
+  </section>
+
+  <PlaybookSection title={dict.systems.playbook.title} cards={dict.systems.playbook.cards} />
+  <SnapshotsSection
+    title={dict.systems.snapshots.title}
+    items={dict.systems.snapshots.items}
+    relatedLabel={dict.links.relatedProject}
+    locale={locale}
+  />
+  <StackFrameworkSection
+    title={dict.systems.stackFramework.title}
+    columns={dict.systems.stackFramework.columns}
+  />
+  <CtaBanner
+    title={dict.systems.finalCta.title}
+    primary={{ label: dict.ctas.seeAllProjects, href: '/en/projects' }}
+    secondary={{ label: dict.ctas.schedule, href: siteConfig.contact.booking, target: '_blank' }}
+  />
+</BaseLayout>

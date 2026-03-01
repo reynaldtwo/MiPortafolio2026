@@ -1,0 +1,21 @@
+<svg width="1200" height="630" viewBox="0 0 1200 630" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#0B0F14" />
+      <stop offset="100%" stop-color="#0F1620" />
+    </linearGradient>
+    <linearGradient id="stroke" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#7C5CFF" />
+      <stop offset="100%" stop-color="#2EE59D" />
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="630" fill="url(#bg)" />
+  <rect x="72" y="72" width="1056" height="486" rx="24" fill="none" stroke="url(#stroke)" stroke-width="2" />
+  <circle cx="170" cy="170" r="12" fill="#7C5CFF" />
+  <text x="120" y="300" fill="white" font-size="76" font-family="Space Grotesk, Arial, sans-serif" font-weight="700">
+    Reynaldo Sanchez
+  </text>
+  <text x="120" y="360" fill="rgba(255,255,255,0.8)" font-size="34" font-family="Inter, Arial, sans-serif">
+    Fullstack Developer · Flutter-first · Systems & Integrations
+  </text>
+</svg>

@@ -1,0 +1,309 @@
+---
+import Card from '../ui/Card.astro';
+import Badge from '../ui/Badge.astro';
+import Button from '../ui/Button.astro';
+import type { I18nDictionary } from '../../data/i18n';
+import type { Locale, Project, ProjectCategory } from '../../types/content';
+import { translateText } from '../../utils/projects';
+
+interface Props {
+  projects: Project[];
+  locale: Locale;
+  dict: I18nDictionary;
+}
+
+const { projects, locale, dict } = Astro.props;
+const categories: ProjectCategory[] = ['all', 'flutter', 'backend', 'automation', 'integrations'];
+---
+
+<section class="section" data-projects-section>
+  <div class="container stack-5">
+    <div class="filter-bar reveal" data-reveal>
+      {
+        categories.map((category, index) => (
+          <button
+            type="button"
+            class:list={['filter-chip', { active: index === 0 }]}
+            data-filter-button
+            data-filter={category}
+          >
+            {dict.filters[category]}
+          </button>
+        ))
+      }
+    </div>
+
+    <div class="projects-list stack-5">
+      {
+        projects.map((project) => (
+          <article
+            id={project.links.caseStudyAnchor}
+            class="project-item reveal"
+            data-reveal
+            data-project-card
+            data-categories={project.categories.join(',')}
+            data-testid={`project-card-${project.id}`}
+          >
+            <Card>
+              <div class="project-card stack-5">
+                <header class="stack-4">
+                  <div class="top-row">
+                    <h3>{translateText(project.title, locale)}</h3>
+                    <div class="chip-row">
+                      {project.categories.map((category) => <Badge>{dict.filters[category]}</Badge>)}
+                    </div>
+                  </div>
+                  <p>{translateText(project.oneLiner, locale)}</p>
+                </header>
+
+                <div class="project-grid">
+                  <section class="stack-4">
+                    <h4>{dict.labels.problem}</h4>
+                    <p>{translateText(project.problem, locale)}</p>
+                    <div class="chip-row">
+                      {project.roles.map((role) => <Badge>{translateText(role, locale)}</Badge>)}
+                    </div>
+                  </section>
+
+                  <section class="stack-4">
+                    <h4>{dict.labels.architecture}</h4>
+                    <ul>
+                      {project.architecture.slice(0, 2).map((entry) => <li>{translateText(entry, locale)}</li>)}
+                    </ul>
+                    <h4>{dict.labels.impact}</h4>
+                    <ul>
+                      {project.impact.slice(0, 2).map((entry) => <li>{translateText(entry, locale)}</li>)}
+                    </ul>
+                  </section>
+                </div>
+
+                <section class="stack-4">
+                  <h4>{dict.labels.stack}</h4>
+                  <div class="chip-row">
+                    {project.stack.map((tech) => <Badge>{tech}</Badge>)}
+                  </div>
+                </section>
+
+                <div class="cta-row">
+                  <a href={`#${project.links.caseStudyAnchor}`} class="case-link">
+                    {dict.links.readCaseStudy}
+                  </a>
+                  {project.links.demo && (
+                    <Button href={project.links.demo} variant="secondary" target="_blank">
+                      {dict.links.demo}
+                    </Button>
+                  )}
+                  {project.links.repo && (
+                    <Button href={project.links.repo} variant="ghost" target="_blank">
+                      {dict.links.repo}
+                    </Button>
+                  )}
+                </div>
+
+                <details class="case-study" data-case-study>
+                  <summary>{dict.links.readCaseStudy}</summary>
+                  <div class="case-study-body">
+                    <section>
+                      <h4>{dict.labels.context}</h4>
+                      <p>{translateText(project.caseStudy.context, locale)}</p>
+                    </section>
+                    <section>
+                      <h4>{dict.labels.constraints}</h4>
+                      <ul>
+                        {project.caseStudy.constraints.map((entry) => <li>{translateText(entry, locale)}</li>)}
+                      </ul>
+                    </section>
+                    <section>
+                      <h4>{dict.labels.solutionOverview}</h4>
+                      <ul>
+                        {project.caseStudy.solution.map((entry) => <li>{translateText(entry, locale)}</li>)}
+                      </ul>
+                    </section>
+                    <section>
+                      <h4>{dict.labels.keyDecisions}</h4>
+                      <ul>
+                        {project.caseStudy.decisions.map((entry) => <li>{translateText(entry, locale)}</li>)}
+                      </ul>
+                    </section>
+                    <section>
+                      <h4>{dict.labels.outcomes}</h4>
+                      <ul>
+                        {project.caseStudy.outcomes.map((entry) => <li>{translateText(entry, locale)}</li>)}
+                      </ul>
+                    </section>
+                    <section>
+                      <h4>{dict.labels.lessons}</h4>
+                      <ul>
+                        {project.caseStudy.lessons.map((entry) => <li>{translateText(entry, locale)}</li>)}
+                      </ul>
+                    </section>
+                  </div>
+                </details>
+              </div>
+            </Card>
+          </article>
+        ))
+      }
+    </div>
+  </div>
+</section>
+
+<script>
+  const root = document.querySelector('[data-projects-section]');
+  if (root) {
+    const filterButtons = root.querySelectorAll('[data-filter-button]');
+    const cards = root.querySelectorAll('[data-project-card]');
+    filterButtons.forEach((button) => {
+      button.addEventListener('click', () => {
+        const target = button.getAttribute('data-filter');
+        filterButtons.forEach((item) => item.classList.remove('active'));
+        button.classList.add('active');
+        cards.forEach((card) => {
+          const categories = card.getAttribute('data-categories') ?? '';
+          const show = target === 'all' || categories.split(',').includes(target ?? '');
+          card.classList.toggle('is-hidden', !show);
+        });
+      });
+    });
+  }
+</script>
+
+<style>
+  .filter-bar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-3);
+  }
+
+  .filter-chip {
+    position: relative;
+    overflow: hidden;
+    border-radius: var(--radius-pill);
+    border: 1px solid var(--stroke);
+    background: color-mix(in srgb, var(--card) 84%, transparent);
+    color: var(--text-1);
+    font-weight: 600;
+    padding: 0.45rem 0.95rem;
+    transition:
+      border-color var(--motion-fast) var(--motion-ease),
+      background-color var(--motion-fast) var(--motion-ease),
+      color var(--motion-fast) var(--motion-ease);
+  }
+
+  .filter-chip::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    transform: translateX(-100%);
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.28), transparent);
+    transition: transform 420ms var(--motion-ease);
+  }
+
+  .filter-chip.active {
+    border-color: color-mix(in srgb, var(--accent) 64%, white 36%);
+    background: color-mix(in srgb, var(--accent) 18%, transparent);
+    color: var(--text-0);
+  }
+
+  .filter-chip.active::before {
+    transform: translateX(100%);
+  }
+
+  .project-item.is-hidden {
+    display: none;
+  }
+
+  .project-card {
+    position: relative;
+  }
+
+  .top-row {
+    display: flex;
+    align-items: start;
+    justify-content: space-between;
+    gap: var(--space-4);
+    flex-wrap: wrap;
+  }
+
+  h3 {
+    font-size: clamp(1.15rem, 1.8vw, 1.45rem);
+  }
+
+  h4 {
+    margin: 0;
+    color: var(--text-0);
+    font-size: 0.95rem;
+  }
+
+  .project-grid {
+    display: grid;
+    grid-template-columns: 1.08fr 0.92fr;
+    gap: var(--space-4);
+  }
+
+  ul {
+    margin: 0;
+    padding-left: 1.1rem;
+    color: var(--text-1);
+    display: grid;
+    gap: 0.34rem;
+  }
+
+  .cta-row {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: var(--space-3);
+  }
+
+  .case-link {
+    text-decoration: underline transparent;
+    text-underline-offset: 4px;
+    font-weight: 600;
+    color: var(--card-text-1);
+  }
+
+  .case-link:hover {
+    color: var(--card-text-0);
+    text-decoration-color: var(--accent-2);
+  }
+
+  .case-study {
+    border: 1px solid var(--stroke);
+    border-radius: var(--radius-md);
+    padding: var(--space-3) var(--space-4);
+    background: color-mix(in srgb, var(--card) 84%, transparent);
+  }
+
+  .case-study summary {
+    cursor: pointer;
+    font-weight: 600;
+    color: var(--text-0);
+  }
+
+  .case-study-body {
+    margin-top: var(--space-4);
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--space-4);
+    animation: case-open var(--motion-base) var(--motion-ease);
+  }
+
+  @keyframes case-open {
+    from {
+      opacity: 0;
+      transform: translateY(6px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @media (max-width: 880px) {
+    .project-grid,
+    .case-study-body {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

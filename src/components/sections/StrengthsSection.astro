@@ -1,0 +1,27 @@
+---
+import Badge from '../ui/Badge.astro';
+
+interface Props {
+  title: string;
+  paragraph: string;
+  chips: string[];
+}
+
+const { title, paragraph, chips } = Astro.props;
+---
+
+<section class="section">
+  <div class="container stack-5">
+    <h2 class="section-title reveal" data-reveal>{title}</h2>
+    <p class="section-subtitle reveal" data-reveal>{paragraph}</p>
+    <div class="chip-row reveal" data-reveal>
+      {chips.map((chip) => <Badge>{chip}</Badge>)}
+    </div>
+  </div>
+</section>
+
+<style>
+  .chip-row {
+    max-width: 70rem;
+  }
+</style>

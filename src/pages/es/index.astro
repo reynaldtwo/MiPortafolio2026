@@ -1,0 +1,49 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import HeroSection from '../../components/sections/HeroSection.astro';
+import PillarsSection from '../../components/sections/PillarsSection.astro';
+import FeaturedProjectsSection from '../../components/sections/FeaturedProjectsSection.astro';
+import CtaBanner from '../../components/sections/CtaBanner.astro';
+import { getDictionary } from '../../data/i18n';
+import { projects } from '../../data/projects';
+import { siteConfig } from '../../data/site';
+import { getFeaturedProjects } from '../../utils/projects';
+
+const locale = 'es';
+const dict = getDictionary(locale);
+const featuredProjects = getFeaturedProjects(projects);
+const pathname = '/es/';
+---
+
+<BaseLayout
+  locale={locale}
+  dict={dict}
+  title={dict.meta.home.title}
+  description={dict.meta.home.description}
+  pathname={pathname}
+>
+  <HeroSection
+    title={dict.home.hero.title}
+    subline={dict.home.hero.subline}
+    paragraph={dict.home.hero.paragraph}
+    chips={dict.home.hero.proofChips}
+    panelTitle={dict.home.credibility.title}
+    highlights={dict.home.credibility.metrics}
+    primaryCta={{ label: dict.ctas.viewWork, href: '/es/projects' }}
+    secondaryCta={{ label: dict.ctas.systemsArchitecture, href: '/es/systems' }}
+  />
+
+  <PillarsSection title={dict.home.pillars.title} items={dict.home.pillars.items} />
+  <FeaturedProjectsSection
+    title={dict.home.featured.title}
+    projects={featuredProjects}
+    locale={locale}
+    dict={dict}
+    projectsHref="/es/projects"
+  />
+  <CtaBanner
+    title={dict.home.finalCta.title}
+    primary={{ label: dict.ctas.schedule, href: siteConfig.contact.booking, target: '_blank' }}
+    secondary={{ label: dict.ctas.email, href: siteConfig.contact.email }}
+  />
+</BaseLayout>

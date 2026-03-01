@@ -1,0 +1,26 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Button from '../components/ui/Button.astro';
+import { getDictionary } from '../data/i18n';
+
+const locale = 'en';
+const dict = getDictionary(locale);
+---
+
+<BaseLayout
+  locale={locale}
+  dict={dict}
+  title={dict.meta.notFound.title}
+  description={dict.meta.notFound.description}
+  pathname="/404"
+>
+  <section class="section">
+    <div class="container stack-5">
+      <h1 class="reveal" data-reveal>{dict.notFound.title}</h1>
+      <p class="reveal" data-reveal>{dict.notFound.body}</p>
+      <div class="reveal" data-reveal>
+        <Button href="/en">{dict.notFound.cta}</Button>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
