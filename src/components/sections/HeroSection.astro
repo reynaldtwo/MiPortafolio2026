@@ -100,6 +100,23 @@ const {
     background: color-mix(in srgb, var(--accent-2) 12%, transparent);
   }
 
+  :global([data-theme='light']) .eyebrow {
+    color: #f3f5f7;
+    font-weight: 600;
+    letter-spacing: 0.01em;
+    border-color: rgba(28, 60, 98, 0.22);
+    background: linear-gradient(
+      135deg,
+      #2f7df6,
+      #1f5fdb 58%,
+      #163f8f 140%
+    );
+    box-shadow:
+      0 14px 30px rgba(47, 125, 246, 0.2),
+      0 8px 18px rgba(22, 63, 143, 0.14),
+      inset 0 1px 0 rgba(255, 255, 255, 0.2);
+  }
+
   .hero-paragraph {
     max-width: 64ch;
   }

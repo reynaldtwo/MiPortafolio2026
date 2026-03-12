@@ -27,7 +27,7 @@ export const siteSchema = z.object({
     booking: z.string().url(),
     github: z.string().url(),
     linkedin: z.string().url(),
-    playStore: z.string().url(),
+    whatsapp: z.string().url(),
   }),
 });
 

@@ -14,10 +14,10 @@ export const siteConfig: SiteConfig = {
     { key: 'contact', slug: 'contact' },
   ],
   contact: {
-    email: 'mailto:your-email@example.com',
+    email: 'mailto:reynaldv12@gmail.com',
     booking: 'https://calendly.com/',
-    github: 'https://github.com/',
-    linkedin: 'https://www.linkedin.com/',
-    playStore: 'https://play.google.com/store',
+    github: 'https://github.com/reynaldtwo',
+    linkedin: 'https://www.linkedin.com/in/reynaldo-s%C3%A1nchez-hern%C3%A1ndez/',
+    whatsapp: 'https://wa.me/50585213462',
   },
 };

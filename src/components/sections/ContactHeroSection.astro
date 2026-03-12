@@ -1,0 +1,236 @@
+---
+import Button from '../ui/Button.astro';
+import type { I18nDictionary } from '../../data/i18n';
+import { siteConfig } from '../../data/site';
+
+interface Props {
+  dict: I18nDictionary;
+}
+
+const { dict } = Astro.props;
+const isEs = dict.localeCode === 'es';
+
+const proofChips = isEs
+  ? ['Remoto', 'Internacional', 'WhatsApp-ready', 'Flutter-first']
+  : ['Remote', 'International', 'WhatsApp-ready', 'Flutter-first'];
+
+const panelKicker = isEs ? 'Canal recomendado segun contexto' : 'Recommended channel by context';
+const panelRows = [
+  {
+    title: 'WhatsApp',
+    detail: isEs ? 'Contacto agil para primeras conversaciones y coordinacion rapida.' : 'Fast first contact and quick coordination.',
+    brand: '#25d366',
+  },
+  {
+    title: 'Email',
+    detail: isEs ? 'Mejor para alcance, propuesta y siguientes pasos con claridad.' : 'Best for scope, proposal, and clear next steps.',
+    brand: '#ea4335',
+  },
+  {
+    title: isEs ? 'LinkedIn + GitHub' : 'LinkedIn + GitHub',
+    detail: isEs ? 'Contexto profesional y evidencia tecnica en paralelo.' : 'Professional context and technical proof side by side.',
+    brand: '#2f7df6',
+  },
+];
+---
+
+<section class="section contact-hero">
+  <div class="container">
+    <div class="hero-shell surface">
+      <div class="hero-copy stack-5 reveal" data-reveal>
+        <div class="stack-4">
+          <p class="hero-kicker">{panelKicker}</p>
+          <h1>{dict.contact.hero.title}</h1>
+          <p class="section-subtitle">{dict.contact.hero.subline}</p>
+        </div>
+
+        <div class="chip-row contact-proof">
+          {proofChips.map((chip) => <span class="proof-chip">{chip}</span>)}
+        </div>
+
+        <div class="hero-actions">
+          <Button href={siteConfig.contact.whatsapp} target="_blank">
+            {isEs ? 'Abrir WhatsApp' : 'Open WhatsApp'}
+          </Button>
+          <Button href={siteConfig.contact.email} variant="secondary">
+            {dict.ctas.email}
+          </Button>
+        </div>
+      </div>
+
+      <aside class="contact-panel reveal" data-reveal>
+        <div class="panel-card">
+          <div class="panel-head">
+            <strong>{isEs ? 'Ruta de contacto' : 'Contact route'}</strong>
+            <span>{siteConfig.timezoneLabel} | Managua</span>
+          </div>
+
+          <div class="panel-grid">
+            {
+              panelRows.map((item) => (
+                <article class="panel-row" style={`--brand:${item.brand}`}>
+                  <span class="panel-dot" aria-hidden="true"></span>
+                  <div class="stack-4">
+                    <h2>{item.title}</h2>
+                    <p>{item.detail}</p>
+                  </div>
+                </article>
+              ))
+            }
+          </div>
+        </div>
+      </aside>
+    </div>
+  </div>
+</section>
+
+<style>
+  .contact-hero {
+    padding-top: clamp(2.2rem, 5vw, 4rem);
+  }
+
+  .hero-shell {
+    position: relative;
+    overflow: hidden;
+    padding: clamp(1.2rem, 3vw, 1.85rem);
+    display: grid;
+    grid-template-columns: 1.05fr 0.95fr;
+    gap: clamp(1.2rem, 3vw, 2rem);
+    align-items: stretch;
+  }
+
+  .hero-shell::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(circle at 16% 18%, color-mix(in srgb, var(--accent) 20%, transparent), transparent 34%),
+      radial-gradient(circle at 84% 72%, color-mix(in srgb, var(--accent-2) 18%, transparent), transparent 40%);
+    pointer-events: none;
+  }
+
+  .hero-copy,
+  .contact-panel {
+    position: relative;
+    z-index: 1;
+  }
+
+  .hero-kicker {
+    width: fit-content;
+    padding: 0.28rem 0.78rem;
+    border-radius: var(--radius-pill);
+    border: 1px solid color-mix(in srgb, var(--accent) 24%, var(--stroke));
+    background: color-mix(in srgb, var(--accent) 12%, transparent);
+    color: var(--card-text-muted);
+    font-family: var(--font-mono);
+    font-size: 0.76rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .contact-proof {
+    gap: 0.7rem;
+  }
+
+  .proof-chip {
+    padding: 0.34rem 0.72rem;
+    border-radius: var(--radius-pill);
+    border: 1px solid var(--stroke);
+    background: color-mix(in srgb, var(--card) 82%, transparent);
+    color: var(--card-text-1);
+    font-size: 0.82rem;
+    font-weight: 600;
+  }
+
+  .hero-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-3);
+  }
+
+  .contact-panel {
+    display: grid;
+  }
+
+  .panel-card {
+    min-height: 100%;
+    padding: clamp(1rem, 2.5vw, 1.35rem);
+    border-radius: var(--radius-lg);
+    border: 1px solid color-mix(in srgb, var(--stroke) 88%, transparent);
+    background:
+      linear-gradient(145deg, color-mix(in srgb, var(--card) 94%, transparent), color-mix(in srgb, var(--bg-2) 76%, transparent)),
+      radial-gradient(circle at 82% 18%, color-mix(in srgb, var(--accent) 16%, transparent), transparent 32%);
+    box-shadow: var(--shadow-soft);
+    display: grid;
+    gap: var(--space-4);
+  }
+
+  .panel-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-3);
+  }
+
+  .panel-head strong {
+    color: var(--card-text-0);
+    font-size: 0.98rem;
+  }
+
+  .panel-head span {
+    color: var(--card-text-muted);
+    font-family: var(--font-mono);
+    font-size: 0.76rem;
+  }
+
+  .panel-grid {
+    display: grid;
+    gap: var(--space-3);
+  }
+
+  .panel-row {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 0.85rem;
+    align-items: start;
+    padding: 0.9rem;
+    border-radius: var(--radius-md);
+    border: 1px solid color-mix(in srgb, var(--brand) 18%, var(--stroke));
+    background: color-mix(in srgb, var(--card) 84%, transparent);
+  }
+
+  .panel-dot {
+    width: 0.78rem;
+    height: 0.78rem;
+    border-radius: 999px;
+    margin-top: 0.22rem;
+    background: var(--brand);
+    box-shadow: 0 0 0 6px color-mix(in srgb, var(--brand) 16%, transparent);
+  }
+
+  .panel-row h2 {
+    font-size: 1rem;
+  }
+
+  .panel-row p {
+    color: var(--card-text-1);
+    font-size: 0.92rem;
+  }
+
+  @media (max-width: 980px) {
+    .hero-shell {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  @media (max-width: 680px) {
+    .hero-actions a {
+      width: 100%;
+    }
+
+    .panel-head {
+      align-items: start;
+      flex-direction: column;
+    }
+  }
+</style>

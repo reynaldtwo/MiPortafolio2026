@@ -1,7 +1,7 @@
 ---
 import '../styles/globals.css';
 import HeaderPremium from '../components/nav/HeaderPremium.astro';
-import Button from '../components/ui/Button.astro';
+import { siGithub, siGmail } from 'simple-icons';
 import { siteConfig } from '../data/site';
 import type { Locale } from '../types/content';
 import type { I18nDictionary } from '../data/i18n';
@@ -14,12 +14,36 @@ interface Props {
   description: string;
   pathname: string;
   ogImage?: string;
+  hideFooter?: boolean;
 }
 
-const { locale, dict, title, description, pathname, ogImage = '/images/og-default.svg' } = Astro.props;
+const { locale, dict, title, description, pathname, ogImage = '/images/og-default.svg', hideFooter = false } = Astro.props;
 const alternates = getAlternateLinks(pathname);
 const canonical = new URL(pathname, siteConfig.siteUrl).toString();
 const ogImageUrl = new URL(ogImage, siteConfig.siteUrl).toString();
+const footerLinks = [
+  {
+    label: 'Email',
+    href: siteConfig.contact.email,
+    external: false,
+    brand: '#ea4335',
+    icon: { type: 'fill', path: siGmail.path, viewBox: '0 0 24 24' },
+  },
+  {
+    label: 'LinkedIn',
+    href: siteConfig.contact.linkedin,
+    external: true,
+    brand: '#0a66c2',
+    icon: { type: 'linkedin' },
+  },
+  {
+    label: 'GitHub',
+    href: siteConfig.contact.github,
+    external: true,
+    brand: '#6e7681',
+    icon: { type: 'fill', path: siGithub.path, viewBox: '0 0 24 24' },
+  },
+];
 ---
 
 <!doctype html>
@@ -62,30 +86,49 @@ const ogImageUrl = new URL(ogImage, siteConfig.siteUrl).toString();
     <main id="main-content" class="main-content">
       <slot />
     </main>
-    <footer class="section">
-      <div class="container">
-        <div class="footer-shell surface">
-          <div class="stack-4">
-            <p class="footer-line">{dict.footer.line}</p>
-            <p class="footer-muted">{dict.footer.timezone}</p>
+    {
+      !hideFooter && (
+        <footer class="section">
+          <div class="container">
+            <div class="footer-shell surface">
+              <div class="stack-4">
+                <p class="footer-line">{dict.footer.line}</p>
+                <p class="footer-muted">{dict.footer.timezone}</p>
+              </div>
+              <nav class="footer-links" aria-label="Footer links">
+                {
+                  footerLinks.map((link) => (
+                    <a
+                      class="footer-link"
+                      href={link.href}
+                      target={link.external ? '_blank' : undefined}
+                      rel={link.external ? 'noreferrer noopener' : undefined}
+                      style={`--footer-brand:${link.brand}`}
+                    >
+                      <span class:list={['footer-link-icon', link.icon.type === 'linkedin' ? 'is-linkedin' : 'is-fill']} aria-hidden="true">
+                        {link.icon.type === 'fill' ? (
+                          <svg viewBox={link.icon.viewBox}>
+                            <path d={link.icon.path}></path>
+                          </svg>
+                        ) : (
+                          <svg viewBox="0 0 24 24">
+                            <rect x="4.25" y="4.25" width="15.5" height="15.5" rx="3.25"></rect>
+                            <circle cx="8.3" cy="9.05" r="1.05"></circle>
+                            <path d="M7.25 11.4v5.1"></path>
+                            <path d="M11.7 16.5v-3.3a2.35 2.35 0 0 1 4.7 0v3.3"></path>
+                          </svg>
+                        )}
+                      </span>
+                      <span>{link.label}</span>
+                    </a>
+                  ))
+                }
+              </nav>
+            </div>
           </div>
-          <nav class="footer-links" aria-label="Footer links">
-            <Button href={siteConfig.contact.email} variant="link">
-              Email
-            </Button>
-            <Button href={siteConfig.contact.linkedin} variant="link" target="_blank">
-              LinkedIn
-            </Button>
-            <Button href={siteConfig.contact.github} variant="link" target="_blank">
-              GitHub
-            </Button>
-            <Button href={siteConfig.contact.playStore} variant="link" target="_blank">
-              Play Store
-            </Button>
-          </nav>
-        </div>
-      </div>
-    </footer>
+        </footer>
+      )
+    }
     <script is:inline>
       (() => {
         const root = document.documentElement;
@@ -162,5 +205,77 @@ const ogImageUrl = new URL(ogImage, siteConfig.siteUrl).toString();
     display: flex;
     gap: var(--space-4);
     flex-wrap: wrap;
+  }
+
+  .footer-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.62rem;
+    padding: 0.56rem 0.9rem;
+    border-radius: var(--radius-pill);
+    border: 1px solid color-mix(in srgb, var(--footer-brand) 26%, var(--stroke));
+    background: color-mix(in srgb, var(--card) 90%, transparent);
+    color: var(--text-0);
+    font-weight: 600;
+    transition:
+      transform var(--motion-fast) var(--motion-ease),
+      border-color var(--motion-fast) var(--motion-ease),
+      background-color var(--motion-fast) var(--motion-ease),
+      box-shadow var(--motion-fast) var(--motion-ease);
+  }
+
+  .footer-link:hover {
+    transform: translateY(-2px);
+    border-color: color-mix(in srgb, var(--footer-brand) 44%, var(--stroke-strong));
+    background: color-mix(in srgb, var(--footer-brand) 10%, var(--card));
+    box-shadow: 0 10px 24px color-mix(in srgb, var(--footer-brand) 18%, transparent);
+  }
+
+  .footer-link-icon {
+    width: 1.15rem;
+    height: 1.15rem;
+    display: inline-grid;
+    place-items: center;
+    color: var(--footer-brand);
+    flex: 0 0 auto;
+  }
+
+  .footer-link-icon svg {
+    width: 100%;
+    height: 100%;
+  }
+
+  .footer-link-icon.is-fill path {
+    fill: currentColor;
+  }
+
+  .footer-link-icon.is-linkedin circle {
+    fill: currentColor;
+  }
+
+  .footer-link-icon.is-linkedin rect {
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.7;
+  }
+
+  .footer-link-icon.is-linkedin svg path {
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.7;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  @media (max-width: 720px) {
+    .footer-links {
+      width: 100%;
+      gap: var(--space-3);
+    }
+
+    .footer-link {
+      width: 100%;
+      justify-content: center;
+    }
   }
 </style>

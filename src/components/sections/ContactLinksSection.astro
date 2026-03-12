@@ -1,4 +1,5 @@
 ---
+import { siGithub, siGmail, siWhatsapp } from 'simple-icons';
 import Card from '../ui/Card.astro';
 import Badge from '../ui/Badge.astro';
 import type { I18nDictionary } from '../../data/i18n';
@@ -9,41 +10,126 @@ interface Props {
 }
 
 const { dict } = Astro.props;
+const isEs = dict.localeCode === 'es';
+
 const links = [
-  { key: 'LinkedIn', href: siteConfig.contact.linkedin, external: true },
-  { key: 'GitHub', href: siteConfig.contact.github, external: true },
-  { key: 'Play Store', href: siteConfig.contact.playStore, external: true },
-  { key: 'Email', href: siteConfig.contact.email, external: false },
-  { key: 'Schedule', href: siteConfig.contact.booking, external: true },
+  {
+    key: 'Email',
+    href: siteConfig.contact.email,
+    external: false,
+    brand: '#ea4335',
+    title: 'Email',
+    kicker: isEs ? 'Conversacion directa' : 'Direct conversation',
+    description: isEs
+      ? 'Ideal para conversar alcance, disponibilidad y siguientes pasos sin ruido.'
+      : 'Best for project scope, availability, and next steps without extra noise.',
+    action: isEs ? 'Enviar correo' : 'Send email',
+    icon: { type: 'fill', path: siGmail.path, viewBox: '0 0 24 24' },
+  },
+  {
+    key: 'WhatsApp',
+    href: siteConfig.contact.whatsapp,
+    external: true,
+    brand: '#25d366',
+    title: 'WhatsApp',
+    kicker: isEs ? 'Respuesta rapida' : 'Fast response',
+    description: isEs
+      ? 'Para un primer contacto agil, mensajes breves y coordinacion rapida desde movil o web.'
+      : 'For quick first contact, short messages, and fast coordination from mobile or web.',
+    action: isEs ? 'Abrir WhatsApp' : 'Open WhatsApp',
+    icon: { type: 'fill', path: siWhatsapp.path, viewBox: '0 0 24 24' },
+  },
+  {
+    key: 'LinkedIn',
+    href: siteConfig.contact.linkedin,
+    external: true,
+    brand: '#0a66c2',
+    title: 'LinkedIn',
+    kicker: isEs ? 'Perfil profesional' : 'Professional profile',
+    description: isEs
+      ? 'Trayectoria, enfoque de trabajo y contexto profesional en un solo lugar.'
+      : 'Career background, work approach, and professional context in one place.',
+    action: isEs ? 'Ver perfil' : 'View profile',
+    icon: { type: 'linkedin' },
+  },
+  {
+    key: 'GitHub',
+    href: siteConfig.contact.github,
+    external: true,
+    brand: '#8b949e',
+    title: 'GitHub',
+    kicker: isEs ? 'Prueba tecnica' : 'Technical proof',
+    description: isEs
+      ? 'Codigo, estructura y evidencia de ejecucion para revisar con mas criterio.'
+      : 'Code, structure, and execution proof to review with more signal.',
+    action: isEs ? 'Explorar repos' : 'Explore repos',
+    icon: { type: 'fill', path: siGithub.path, viewBox: '0 0 24 24' },
+  },
 ];
 ---
 
 <section class="section">
   <div class="container stack-5">
-    <h2 class="section-title reveal" data-reveal>{dict.contact.linksTitle}</h2>
-    <div class="grid-3">
+    <div class="section-head stack-4 reveal" data-reveal>
+      <h2 class="section-title">{dict.contact.linksTitle}</h2>
+      <p class="section-bridge">
+        {isEs
+          ? 'Un bloque limpio para contacto real: correo y WhatsApp para avanzar, LinkedIn para contexto y GitHub para evidencia tecnica.'
+          : 'One clean contact block: email and WhatsApp to move things forward, LinkedIn for context, and GitHub for technical proof.'}
+      </p>
+    </div>
+
+    <div class="contact-grid">
       {
         links.map((link, index) => (
           <Card>
             <a
-              class="link-card reveal"
+              class="contact-card reveal"
               data-reveal
-              style={`--delay:${index * 70}ms`}
+              style={`--delay:${index * 80}ms;--brand:${link.brand}`}
               href={link.href}
               target={link.external ? '_blank' : undefined}
               rel={link.external ? 'noreferrer noopener' : undefined}
+              aria-label={link.title}
             >
-              <h3>{link.key}</h3>
-              <p>{link.href}</p>
-              <span class="jump" aria-hidden="true">Open</span>
+              <div class="contact-card-head">
+                <span class:list={['contact-icon', link.icon.type === 'linkedin' ? 'is-linkedin' : 'is-fill']} aria-hidden="true">
+                  {link.icon.type === 'fill' ? (
+                    <svg viewBox={link.icon.viewBox}>
+                      <path d={link.icon.path}></path>
+                    </svg>
+                  ) : (
+                    <svg viewBox="0 0 24 24">
+                      <rect x="4.25" y="4.25" width="15.5" height="15.5" rx="3.25"></rect>
+                      <circle cx="8.3" cy="9.05" r="1.05"></circle>
+                      <path d="M7.25 11.4v5.1"></path>
+                      <path d="M11.7 16.5v-3.3a2.35 2.35 0 0 1 4.7 0v3.3"></path>
+                    </svg>
+                  )}
+                </span>
+                <span class="contact-kicker">{link.kicker}</span>
+              </div>
+
+              <div class="contact-copy">
+                <h3>{link.title}</h3>
+                <p>{link.description}</p>
+              </div>
+
+              <span class="contact-action">
+                <span>{link.action}</span>
+                <span aria-hidden="true">-&gt;</span>
+              </span>
             </a>
           </Card>
         ))
       }
     </div>
-    <div class="stack-4 reveal" data-reveal>
-      <h3>{dict.labels.availability}</h3>
-      <p>{dict.contact.availability.text}</p>
+
+    <div class="availability-shell surface reveal" data-reveal>
+      <div class="stack-4">
+        <h3>{dict.labels.availability}</h3>
+        <p>{dict.contact.availability.text}</p>
+      </div>
       <div class="chip-row">
         {dict.contact.availability.chips.map((chip) => <Badge>{chip}</Badge>)}
       </div>
@@ -52,24 +138,142 @@ const links = [
 </section>
 
 <style>
-  .link-card {
+  .section-head {
+    max-width: 68ch;
+  }
+
+  .section-head .section-title {
+    margin-bottom: 0;
+  }
+
+  .section-bridge {
+    color: var(--text-1);
+  }
+
+  .contact-grid {
     display: grid;
-    gap: var(--space-2);
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--space-5);
+  }
+
+  .contact-card {
+    min-height: 100%;
+    display: grid;
+    gap: var(--space-4);
     transition-delay: var(--delay);
   }
 
-  .link-card p {
-    font-size: 0.88rem;
-    word-break: break-all;
+  .contact-card-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-3);
   }
 
-  .jump {
-    width: fit-content;
-    border-radius: var(--radius-pill);
-    border: 1px solid var(--stroke);
-    padding: 0.12rem 0.48rem;
-    font-size: 0.72rem;
-    color: var(--card-text-muted);
+  .contact-icon {
+    width: 2.6rem;
+    height: 2.6rem;
+    border-radius: 0.9rem;
+    display: inline-grid;
+    place-items: center;
+    color: var(--brand);
+    background:
+      linear-gradient(145deg, color-mix(in srgb, var(--brand) 18%, white 82%), color-mix(in srgb, var(--brand) 10%, transparent)),
+      color-mix(in srgb, var(--card) 88%, transparent);
+    border: 1px solid color-mix(in srgb, var(--brand) 28%, var(--stroke));
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.46),
+      0 12px 24px color-mix(in srgb, var(--brand) 12%, transparent);
+    flex: 0 0 auto;
+  }
+
+  .contact-icon svg {
+    width: 1.2rem;
+    height: 1.2rem;
+  }
+
+  .contact-icon.is-fill path {
+    fill: currentColor;
+  }
+
+  .contact-icon.is-linkedin circle {
+    fill: currentColor;
+  }
+
+  .contact-icon.is-linkedin rect {
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.7;
+  }
+
+  .contact-icon.is-linkedin svg path {
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.7;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  .contact-kicker {
     font-family: var(--font-mono);
+    font-size: 0.74rem;
+    color: color-mix(in srgb, var(--brand) 62%, var(--text-1));
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+
+  .contact-copy {
+    display: grid;
+    gap: var(--space-2);
+  }
+
+  .contact-copy p {
+    color: var(--card-text-1);
+  }
+
+  .contact-action {
+    margin-top: auto;
+    width: fit-content;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.48rem;
+    padding: 0.45rem 0.8rem;
+    border-radius: var(--radius-pill);
+    border: 1px solid color-mix(in srgb, var(--brand) 24%, var(--stroke));
+    background: color-mix(in srgb, var(--brand) 10%, transparent);
+    color: var(--card-text-0);
+    font-weight: 600;
+    transition:
+      transform var(--motion-fast) var(--motion-ease),
+      border-color var(--motion-fast) var(--motion-ease),
+      background-color var(--motion-fast) var(--motion-ease);
+  }
+
+  .contact-card:hover .contact-action {
+    transform: translateX(3px);
+    border-color: color-mix(in srgb, var(--brand) 40%, var(--stroke-strong));
+    background: color-mix(in srgb, var(--brand) 16%, transparent);
+  }
+
+  .availability-shell {
+    padding: clamp(1.05rem, 2.8vw, 1.4rem);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-4);
+    flex-wrap: wrap;
+  }
+
+  @media (max-width: 1080px) {
+    .contact-grid {
+      grid-template-columns: 1fr;
+      gap: var(--space-4);
+    }
+  }
+
+  @media (max-width: 720px) {
+    .availability-shell {
+      align-items: start;
+    }
   }
 </style>

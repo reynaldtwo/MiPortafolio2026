@@ -1,5 +1,6 @@
 ---
 import Button from '../ui/Button.astro';
+import BrandStackMark from './BrandStackMark.astro';
 import LanguageSwitch from './LanguageSwitch.astro';
 import ThemeToggle from './ThemeToggle.astro';
 import { siteConfig } from '../../data/site';
@@ -24,7 +25,7 @@ const navItems = siteConfig.nav.map((item) => ({
 <header class="header" data-header>
   <div class="container nav-shell">
     <a class="brand" href={`/${locale}`}>
-      <span class="brand-mark" aria-hidden="true"><span></span></span>
+      <BrandStackMark />
       <span class="brand-copy">
         <strong>{siteConfig.brandName}</strong>
         <small>Fullstack / Flutter-first</small>
@@ -165,26 +166,10 @@ const navItems = siteConfig.nav.map((item) => ({
     min-width: max-content;
   }
 
-  .brand-mark {
-    width: 1.75rem;
-    height: 1.75rem;
-    border-radius: 0.55rem;
-    background: linear-gradient(145deg, var(--accent), var(--accent-2));
-    display: grid;
-    place-items: center;
-    box-shadow: 0 10px 20px rgba(11, 53, 123, 0.35);
-  }
-
-  .brand-mark span {
-    width: 0.72rem;
-    height: 0.72rem;
-    border-radius: 0.2rem;
-    border: 2px solid rgba(255, 255, 255, 0.86);
-  }
-
   .brand-copy {
     display: grid;
     line-height: 1.08;
+    gap: 0.12rem;
   }
 
   .brand-copy strong {

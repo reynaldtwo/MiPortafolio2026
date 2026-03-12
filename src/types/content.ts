@@ -22,7 +22,7 @@ export interface ContactLinks {
   booking: string;
   github: string;
   linkedin: string;
-  playStore: string;
+  whatsapp: string;
 }
 
 export interface SiteConfig {

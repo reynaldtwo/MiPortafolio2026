@@ -1,0 +1,386 @@
+---
+import { brandStackIcons, resolveTechBrand, type TechGlyph } from '../../data/tech-stack';
+
+const switchMs = 2000;
+
+const accentOverrides: Record<string, string> = {
+  java: '#5382a1',
+  copilot: '#7a6cff',
+};
+
+const normalizeHex = (value: string) => {
+  const clean = value.replace('#', '').trim();
+  if (clean.length === 3) {
+    return `#${clean
+      .split('')
+      .map((char) => `${char}${char}`)
+      .join('')}`.toLowerCase();
+  }
+
+  return `#${clean.slice(0, 6)}`.toLowerCase();
+};
+
+const hexToRgb = (value: string) => {
+  const hex = normalizeHex(value).slice(1);
+  return {
+    r: parseInt(hex.slice(0, 2), 16),
+    g: parseInt(hex.slice(2, 4), 16),
+    b: parseInt(hex.slice(4, 6), 16),
+  };
+};
+
+const toHex = (value: number) => Math.round(Math.max(0, Math.min(255, value))).toString(16).padStart(2, '0');
+
+const mixHex = (from: string, to: string, weightTo: number) => {
+  const start = hexToRgb(from);
+  const end = hexToRgb(to);
+  const ratio = Math.max(0, Math.min(1, weightTo));
+
+  return `#${toHex(start.r + (end.r - start.r) * ratio)}${toHex(start.g + (end.g - start.g) * ratio)}${toHex(start.b + (end.b - start.b) * ratio)}`;
+};
+
+const withAlpha = (value: string, alpha: number) => {
+  const { r, g, b } = hexToRgb(value);
+  return `rgba(${r}, ${g}, ${b}, ${alpha})`;
+};
+
+const getLuminance = (value: string) => {
+  const { r, g, b } = hexToRgb(value);
+  const channel = (sample: number) => {
+    const normalized = sample / 255;
+    return normalized <= 0.03928 ? normalized / 12.92 : ((normalized + 0.055) / 1.055) ** 2.4;
+  };
+
+  return 0.2126 * channel(r) + 0.7152 * channel(g) + 0.0722 * channel(b);
+};
+
+const getGlyphVisuals = (glyph: TechGlyph) => {
+  const brand = resolveTechBrand(glyph);
+  const accent = accentOverrides[glyph.id] ?? brand;
+  const darkBrand = getLuminance(accent) < 0.24;
+  const usesImage = Boolean(glyph.iconSrc);
+
+  return {
+    accent,
+    shellStart: darkBrand ? mixHex(accent, '#2f7df6', 0.48) : mixHex(accent, '#081320', 0.22),
+    shellEnd: darkBrand ? mixHex(accent, '#081320', 0.76) : mixHex(accent, '#081320', 0.6),
+    stageStart: usesImage || darkBrand ? mixHex(accent, '#ffffff', 0.9) : mixHex(accent, '#ffffff', 0.76),
+    stageEnd: usesImage || darkBrand ? mixHex(accent, '#dbe7ff', 0.92) : mixHex(accent, '#dbe7ff', 0.82),
+    stageBorder: withAlpha(accent, usesImage || darkBrand ? 0.38 : 0.28),
+    stageGlow: withAlpha(accent, darkBrand ? 0.3 : 0.22),
+    iconFill: darkBrand ? mixHex(accent, '#102338', 0.18) : mixHex(brand, '#ffffff', 0.2),
+    iconShadow: withAlpha('#081320', usesImage ? 0.16 : 0.24),
+  };
+};
+
+const iconEntries = brandStackIcons.map((icon) => ({ icon, visuals: getGlyphVisuals(icon) }));
+const initialVisuals = iconEntries[0].visuals;
+---
+
+<span
+  class="brand-stack-mark"
+  aria-hidden="true"
+  data-brand-stack
+  style={`--active-brand:${initialVisuals.accent};--switch-ms:${switchMs}ms;--shell-start:${initialVisuals.shellStart};--shell-end:${initialVisuals.shellEnd};--stage-start:${initialVisuals.stageStart};--stage-end:${initialVisuals.stageEnd};--stage-border:${initialVisuals.stageBorder};--stage-glow:${initialVisuals.stageGlow}`}
+>
+  <span class="brand-stack-orbit"></span>
+  <span class="brand-stack-stage">
+    {
+      iconEntries.map(({ icon, visuals }, index) => (
+        <span
+          class:list={['brand-stack-icon', { 'is-active': index === 0, 'is-idle': index !== 0 }]}
+          data-brand-icon
+          data-brand-color={visuals.accent}
+          data-shell-start={visuals.shellStart}
+          data-shell-end={visuals.shellEnd}
+          data-stage-start={visuals.stageStart}
+          data-stage-end={visuals.stageEnd}
+          data-stage-border={visuals.stageBorder}
+          data-stage-glow={visuals.stageGlow}
+          title={icon.label}
+          style={`--brand:${visuals.accent};--glyph-fill:${visuals.iconFill};--glyph-shadow:${visuals.iconShadow}`}
+        >
+          {icon.iconSrc ? (
+            <img src={icon.iconSrc} alt="" loading="eager" decoding="async" />
+          ) : icon.icon ? (
+            <svg viewBox="0 0 24 24" role="img" aria-label={icon.label}>
+              <path d={icon.icon.path}></path>
+            </svg>
+          ) : (
+            <strong>{icon.fallback}</strong>
+          )}
+        </span>
+      ))
+    }
+  </span>
+</span>
+
+<script is:inline>
+  (() => {
+    const roots = document.querySelectorAll('[data-brand-stack]');
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+    const visualVars = [
+      ['--active-brand', 'brandColor'],
+      ['--shell-start', 'shellStart'],
+      ['--shell-end', 'shellEnd'],
+      ['--stage-start', 'stageStart'],
+      ['--stage-end', 'stageEnd'],
+      ['--stage-border', 'stageBorder'],
+      ['--stage-glow', 'stageGlow'],
+    ];
+
+    const applyVisuals = (root, icon) => {
+      visualVars.forEach(([cssVar, dataKey]) => {
+        const value = icon.dataset[dataKey];
+        if (value) root.style.setProperty(cssVar, value);
+      });
+    };
+
+    const applyState = (root, icons, currentIndex, nextIndex) => {
+      icons.forEach((icon, index) => {
+        icon.classList.remove('is-active', 'is-leaving', 'is-idle');
+
+        if (index === nextIndex) {
+          icon.classList.add('is-active');
+          applyVisuals(root, icon);
+          return;
+        }
+
+        if (index === currentIndex && currentIndex !== nextIndex) {
+          icon.classList.add('is-leaving');
+          return;
+        }
+
+        icon.classList.add('is-idle');
+      });
+    };
+
+    roots.forEach((root) => {
+      const icons = Array.from(root.querySelectorAll('[data-brand-icon]'));
+      if (!icons.length) return;
+
+      let activeIndex = icons.findIndex((icon) => icon.classList.contains('is-active'));
+      if (activeIndex < 0) activeIndex = 0;
+
+      applyState(root, icons, activeIndex, activeIndex);
+
+      if (prefersReducedMotion.matches) return;
+
+      let timer = window.setInterval(() => {
+        const nextIndex = (activeIndex + 1) % icons.length;
+        applyState(root, icons, activeIndex, nextIndex);
+        activeIndex = nextIndex;
+      }, 2000);
+
+      document.addEventListener('visibilitychange', () => {
+        if (document.hidden) {
+          window.clearInterval(timer);
+          return;
+        }
+
+        window.clearInterval(timer);
+        timer = window.setInterval(() => {
+          const nextIndex = (activeIndex + 1) % icons.length;
+          applyState(root, icons, activeIndex, nextIndex);
+          activeIndex = nextIndex;
+        }, 2000);
+      });
+    });
+  })();
+</script>
+
+<style>
+  .brand-stack-mark {
+    --active-brand: #2f7df6;
+    --shell-start: #2f7df6;
+    --shell-end: #12366e;
+    --stage-start: #eef4ff;
+    --stage-end: #d9e8ff;
+    --stage-border: rgba(47, 125, 246, 0.3);
+    --stage-glow: rgba(47, 125, 246, 0.22);
+    position: relative;
+    width: 2.45rem;
+    height: 2.45rem;
+    border-radius: 0.82rem;
+    display: inline-grid;
+    place-items: center;
+    overflow: hidden;
+    isolation: isolate;
+    background:
+      radial-gradient(circle at 26% 22%, rgba(255, 255, 255, 0.28), transparent 34%),
+      linear-gradient(145deg, var(--shell-start), var(--shell-end));
+    border: 1px solid color-mix(in srgb, var(--active-brand) 38%, rgba(255, 255, 255, 0.14));
+    box-shadow:
+      0 12px 24px color-mix(in srgb, var(--active-brand) 22%, rgba(6, 18, 32, 0.4)),
+      inset 0 1px 0 rgba(255, 255, 255, 0.2);
+    transition:
+      background 520ms var(--motion-ease),
+      border-color 520ms var(--motion-ease),
+      box-shadow 520ms var(--motion-ease),
+      transform 280ms var(--motion-ease);
+  }
+
+  .brand-stack-mark::before {
+    content: '';
+    position: absolute;
+    inset: -24%;
+    border-radius: 50%;
+    background: radial-gradient(circle, color-mix(in srgb, var(--active-brand) 26%, transparent), transparent 70%);
+    opacity: 0.9;
+    animation: brand-stack-aura 4.8s var(--motion-ease) infinite;
+    z-index: 0;
+  }
+
+  .brand-stack-mark::after {
+    content: '';
+    position: absolute;
+    inset: 1px;
+    border-radius: calc(0.82rem - 1px);
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    opacity: 0.9;
+    z-index: 2;
+  }
+
+  .brand-stack-orbit {
+    position: absolute;
+    inset: 0.26rem;
+    border-radius: 999px;
+    border: 1px solid color-mix(in srgb, var(--active-brand) 34%, transparent);
+    opacity: 0.68;
+    animation: brand-stack-orbit 7.5s linear infinite;
+    z-index: 1;
+  }
+
+  .brand-stack-orbit::before,
+  .brand-stack-orbit::after {
+    content: '';
+    position: absolute;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.82);
+  }
+
+  .brand-stack-orbit::before {
+    width: 0.18rem;
+    height: 0.18rem;
+    top: -0.1rem;
+    left: 50%;
+    transform: translateX(-50%);
+    box-shadow: 0 0 12px rgba(255, 255, 255, 0.42);
+  }
+
+  .brand-stack-orbit::after {
+    width: 0.14rem;
+    height: 0.14rem;
+    right: 0.1rem;
+    bottom: 0.25rem;
+    opacity: 0.7;
+  }
+
+  .brand-stack-stage {
+    position: relative;
+    width: 1.34rem;
+    height: 1.34rem;
+    display: grid;
+    place-items: center;
+    z-index: 3;
+  }
+
+  .brand-stack-stage::before {
+    content: '';
+    position: absolute;
+    inset: -0.21rem;
+    border-radius: 0.5rem;
+    background: linear-gradient(145deg, var(--stage-start), var(--stage-end));
+    border: 1px solid var(--stage-border);
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.6),
+      0 8px 16px var(--stage-glow);
+  }
+
+  .brand-stack-icon {
+    position: absolute;
+    inset: 0;
+    display: grid;
+    place-items: center;
+    opacity: 0;
+    transform: translateY(38%) scale(0.55) rotate(16deg);
+    filter: blur(10px) saturate(0.72);
+    transition:
+      opacity 540ms var(--motion-ease),
+      transform 700ms var(--motion-ease),
+      filter 700ms var(--motion-ease);
+    will-change: opacity, transform, filter;
+  }
+
+  .brand-stack-icon.is-active {
+    opacity: 1;
+    transform: translateY(0) scale(1) rotate(0deg);
+    filter: blur(0) saturate(1.04);
+  }
+
+  .brand-stack-icon.is-leaving {
+    opacity: 0;
+    transform: translateY(-32%) scale(0.76) rotate(-12deg);
+    filter: blur(6px) saturate(0.92);
+  }
+
+  .brand-stack-icon.is-idle {
+    opacity: 0;
+    transform: translateY(38%) scale(0.55) rotate(16deg);
+    filter: blur(10px) saturate(0.72);
+  }
+
+  .brand-stack-icon svg {
+    width: 100%;
+    height: 100%;
+    fill: var(--glyph-fill);
+    filter: drop-shadow(0 2px 4px var(--glyph-shadow));
+  }
+
+  .brand-stack-icon img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    filter: drop-shadow(0 2px 4px var(--glyph-shadow));
+  }
+
+  .brand-stack-icon strong {
+    font-family: var(--font-mono);
+    font-size: 0.64rem;
+    color: rgba(255, 255, 255, 0.92);
+    text-transform: uppercase;
+  }
+
+  :global([data-theme='light']) .brand-stack-mark {
+    box-shadow:
+      0 10px 20px color-mix(in srgb, var(--active-brand) 18%, rgba(17, 42, 68, 0.16)),
+      inset 0 1px 0 rgba(255, 255, 255, 0.2);
+  }
+
+  @keyframes brand-stack-orbit {
+    to {
+      transform: rotate(1turn);
+    }
+  }
+
+  @keyframes brand-stack-aura {
+    0%,
+    100% {
+      transform: scale(0.86);
+      opacity: 0.72;
+    }
+    50% {
+      transform: scale(1.12);
+      opacity: 1;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .brand-stack-mark::before,
+    .brand-stack-orbit,
+    .brand-stack-icon {
+      animation: none;
+      transition: none;
+    }
+  }
+</style>
