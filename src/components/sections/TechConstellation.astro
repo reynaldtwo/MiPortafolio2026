@@ -1,8 +1,19 @@
 ---
-import { resolveTechBrand, resolveTechTone, techLinks, techNodes, type LinkKind, type TechNode } from '../../data/tech-stack';
+import TechConstellationInfo from './TechConstellationInfo.astro';
+import {
+  resolveTechBrand,
+  resolveTechDescription,
+  resolveTechTone,
+  techLinks,
+  techNodes,
+  type LinkKind,
+  type TechNode,
+} from '../../data/tech-stack';
+import type { Locale } from '../../types/content';
 
 interface Props {
   title?: string;
+  locale?: Locale;
 }
 
 const nodeMap = new Map(techNodes.map((node) => [node.id, node]));
@@ -24,6 +35,7 @@ const hubNode = nodeMap.get('microsoft');
 const subhubNode = nodeMap.get('azure');
 const showOrbitRings = false;
 const showSectors = false;
+const showNodeLabels = false;
 const graphOffsetX = 3.2;
 const graphOffsetY = 2;
 const rootStyle = `--hub-x:${(hubNode?.x ?? 50) + graphOffsetX};--hub-y:${(hubNode?.y ?? 50) + graphOffsetY};--subhub-x:${(subhubNode?.x ?? 58) + graphOffsetX};--subhub-y:${(subhubNode?.y ?? 42) + graphOffsetY}`;
@@ -35,15 +47,23 @@ const sectors = [
   { id: 'delivery', x: 79, y: 59, w: 24, h: 40, tone: 'var(--accent-2)' },
 ] as const;
 
-const { title = '' } = Astro.props;
+const { title = '', locale = 'en' } = Astro.props;
+const defaultNode = hubNode ?? techNodes[0];
 ---
 
-<div class="constellation" aria-hidden="true" data-constellation style={rootStyle}>
-  {title ? (
-    <div class="constellation-head">
-      <p>{title}</p>
-    </div>
-  ) : null}
+<div class="constellation-shell" data-constellation-shell>
+  <div
+    class:list={['constellation', { 'labels-hidden': !showNodeLabels }]}
+    data-constellation
+    style={rootStyle}
+    role="group"
+    aria-label={title || (locale === 'es' ? 'Mapa de stack' : 'Stack map')}
+  >
+    {title ? (
+      <div class="constellation-head">
+        <p>{title}</p>
+      </div>
+    ) : null}
 
     {showSectors ? (
       <div class="sector-layer">
@@ -58,7 +78,7 @@ const { title = '' } = Astro.props;
       </div>
     ) : null}
 
-    <svg class="link-layer" viewBox="0 0 100 100" preserveAspectRatio="none">
+    <svg class="link-layer" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
       {
         links.map((link, index) => (
           <line
@@ -73,13 +93,14 @@ const { title = '' } = Astro.props;
       }
     </svg>
 
-    <div class="hub-pulse"></div>
-    <div class="subhub-pulse"></div>
-    {showOrbitRings ? <div class="core-ring"></div> : null}
+    <div class="hub-pulse" aria-hidden="true"></div>
+    <div class="subhub-pulse" aria-hidden="true"></div>
+    {showOrbitRings ? <div class="core-ring" aria-hidden="true"></div> : null}
 
     {
       techNodes.map((node, index) => (
-        <article
+        <button
+          type="button"
           class:list={[
             'node',
             node.group ? `group-${node.group}` : undefined,
@@ -89,8 +110,15 @@ const { title = '' } = Astro.props;
               hub: node.id === 'microsoft',
               subhub: node.id === 'azure',
               'mobile-hidden': !node.showOnMobile,
+              'is-selected': node.id === defaultNode.id,
             },
           ]}
+          data-tech-node
+          data-tech-id={node.id}
+          data-tech-label={node.label}
+          data-tech-description={resolveTechDescription(node, locale)}
+          aria-label={node.label}
+          aria-pressed={node.id === defaultNode.id ? 'true' : 'false'}
           style={`--x:${node.x + graphOffsetX};--y:${node.y + graphOffsetY};--size:${node.size}px;--dx:${node.dx};--dy:${node.dy};--delay:${index * 80}ms;--brand:${resolveTechBrand(node)};--icon-tone-dark:${resolveTechTone(node, 'dark')};--icon-tone-light:${resolveTechTone(node, 'light')};--label-dx:${node.labelDx ?? 0}px;--label-dy:${node.labelDy ?? 0}px`}
         >
           <span class="glyph" aria-hidden="true">
@@ -104,22 +132,76 @@ const { title = '' } = Astro.props;
               <strong>{node.fallback}</strong>
             )}
           </span>
-          <span class="label">{node.label}</span>
-        </article>
+          {showNodeLabels ? <span class="label">{node.label}</span> : null}
+        </button>
       ))
     }
+  </div>
+
+  <TechConstellationInfo
+    locale={locale}
+    title={defaultNode.label}
+    description={resolveTechDescription(defaultNode, locale)}
+  />
 </div>
 
 <script is:inline>
   (() => {
-    const roots = document.querySelectorAll('[data-constellation]');
-    roots.forEach((root) => {
-      window.requestAnimationFrame(() => root.classList.add('is-ready'));
+    const shells = document.querySelectorAll('[data-constellation-shell]');
+
+    shells.forEach((shell) => {
+      const root = shell.querySelector('[data-constellation]');
+      const title = shell.querySelector('[data-constellation-info-title]');
+      const description = shell.querySelector('[data-constellation-info-description]');
+      const nodes = Array.from(shell.querySelectorAll('[data-tech-node]'));
+      let selectedNode = shell.querySelector('[data-tech-node].is-selected') ?? nodes[0];
+
+      const setActiveNode = (nextNode) => {
+        if (!nextNode || !title || !description) return;
+
+        title.textContent = nextNode.dataset.techLabel ?? '';
+        description.textContent = nextNode.dataset.techDescription ?? '';
+
+        nodes.forEach((node) => {
+          const isCurrent = node === nextNode;
+          node.classList.toggle('is-selected', isCurrent);
+          node.setAttribute('aria-pressed', isCurrent ? 'true' : 'false');
+        });
+      };
+
+      window.requestAnimationFrame(() => root?.classList.add('is-ready'));
+      if (selectedNode) setActiveNode(selectedNode);
+
+      nodes.forEach((node) => {
+        node.addEventListener('mouseenter', () => setActiveNode(node));
+        node.addEventListener('focus', () => setActiveNode(node));
+        node.addEventListener('click', () => {
+          selectedNode = node;
+          setActiveNode(node);
+        });
+      });
+
+      root?.addEventListener('mouseleave', () => {
+        if (selectedNode) setActiveNode(selectedNode);
+      });
+
+      root?.addEventListener('focusout', (event) => {
+        if (!selectedNode) return;
+        const nextTarget = event.relatedTarget;
+        if (!(nextTarget instanceof Node) || !root?.contains(nextTarget)) {
+          setActiveNode(selectedNode);
+        }
+      });
     });
   })();
 </script>
 
 <style>
+  .constellation-shell {
+    display: grid;
+    gap: 0.85rem;
+  }
+
   .constellation-head {
     position: absolute;
     inset: 1rem auto auto 1rem;
@@ -314,11 +396,16 @@ const { title = '' } = Astro.props;
     left: 50%;
     top: 50%;
     width: var(--size);
+    padding: 0;
+    border: 0;
+    background: transparent;
     display: grid;
     justify-items: center;
     gap: 0.26rem;
     z-index: 2;
     opacity: 0;
+    cursor: pointer;
+    text-align: center;
     transform: translate(-50%, -50%) scale(0.24);
     transition:
       left 1000ms var(--motion-ease),
@@ -326,6 +413,14 @@ const { title = '' } = Astro.props;
       opacity 780ms var(--motion-ease),
       transform 1000ms var(--motion-ease);
     transition-delay: var(--delay);
+  }
+
+  .constellation.labels-hidden .node {
+    gap: 0;
+  }
+
+  .node:focus-visible {
+    outline: none;
   }
 
   .node.priority-hero {
@@ -397,6 +492,24 @@ const { title = '' } = Astro.props;
 
   .node.priority-support .glyph {
     opacity: 0.92;
+  }
+
+  .node.is-selected .glyph,
+  .node:hover .glyph,
+  .node:focus-visible .glyph {
+    transform: scale(1.08);
+    border-color: color-mix(in srgb, var(--brand) 38%, transparent);
+    box-shadow:
+      0 0 0 1px color-mix(in srgb, var(--brand) 26%, transparent),
+      0 18px 34px rgba(4, 16, 30, 0.32);
+  }
+
+  :global([data-theme='light']) .node.is-selected .glyph,
+  :global([data-theme='light']) .node:hover .glyph,
+  :global([data-theme='light']) .node:focus-visible .glyph {
+    box-shadow:
+      0 0 0 1px color-mix(in srgb, var(--brand) 18%, transparent),
+      0 16px 30px rgba(18, 34, 56, 0.14);
   }
 
   .glyph svg {
@@ -493,14 +606,8 @@ const { title = '' } = Astro.props;
     z-index: 5;
   }
 
-  .node:hover .glyph {
-    transform: scale(1.08);
-    box-shadow:
-      0 0 0 1px color-mix(in srgb, var(--brand) 28%, transparent),
-      0 18px 34px rgba(4, 16, 30, 0.32);
-  }
-
-  .node:hover .label {
+  .node:hover .label,
+  .node:focus-visible .label {
     opacity: 1;
     transform: translate(var(--label-dx), calc(var(--label-dy) - 1px));
     border-color: color-mix(in srgb, var(--brand) 20%, transparent);
@@ -555,6 +662,10 @@ const { title = '' } = Astro.props;
   }
 
   @media (max-width: 768px) {
+    .constellation-shell {
+      gap: 0.72rem;
+    }
+
     .constellation {
       min-height: 320px;
     }

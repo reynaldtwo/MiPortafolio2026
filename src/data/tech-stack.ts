@@ -12,6 +12,7 @@ import {
   siPostgresql,
   siTypescript,
 } from 'simple-icons';
+import type { Locale, LocalizedText } from '../types/content';
 
 export interface IconData {
   path: string;
@@ -32,6 +33,7 @@ export interface TechGlyph {
 }
 
 export interface TechNode extends TechGlyph {
+  description: LocalizedText;
   x: number;
   y: number;
   size: number;
@@ -53,6 +55,7 @@ export interface TechLink {
 type ThemeMode = 'dark' | 'light';
 
 const FALLBACK_BRAND = '#2f7df6';
+const copy = (en: string, es: string): LocalizedText => ({ en, es });
 
 const normalizeHex = (value: string) => {
   const hex = value.replace('#', '').trim();
@@ -103,6 +106,10 @@ export const techNodes: TechNode[] = [
   {
     id: 'flutter',
     label: 'Flutter',
+    description: copy(
+      'Primary product layer for fast cross-platform apps with consistent UX.',
+      'Capa principal de producto para apps multiplataforma rapidas con UX consistente.',
+    ),
     x: 16,
     y: 22,
     size: 50,
@@ -115,6 +122,10 @@ export const techNodes: TechNode[] = [
   {
     id: 'astro',
     label: 'Astro',
+    description: copy(
+      'Marketing and content shell with fast static delivery.',
+      'Capa de marketing y contenido con entrega estatica rapida.',
+    ),
     x: 29,
     y: 16,
     size: 46,
@@ -127,6 +138,10 @@ export const techNodes: TechNode[] = [
   {
     id: 'html',
     label: 'HTML5',
+    description: copy(
+      'Semantic structure for landing pages and content modules.',
+      'Estructura semantica para landing pages y modulos de contenido.',
+    ),
     x: 49,
     y: 12,
     size: 44,
@@ -139,6 +154,10 @@ export const techNodes: TechNode[] = [
   {
     id: 'css',
     label: 'CSS',
+    description: copy(
+      'Visual system, spacing, motion, and responsive polish.',
+      'Sistema visual, espaciado, motion y acabado responsive.',
+    ),
     x: 63,
     y: 16,
     size: 40,
@@ -151,6 +170,10 @@ export const techNodes: TechNode[] = [
   {
     id: 'js',
     label: 'JavaScript',
+    description: copy(
+      'Client-side behaviors for interactions, state, and UI glue.',
+      'Comportamiento del cliente para interacciones, estado y logica de UI.',
+    ),
     x: 76,
     y: 27,
     size: 46,
@@ -164,6 +187,10 @@ export const techNodes: TechNode[] = [
   {
     id: 'ts',
     label: 'TypeScript',
+    description: copy(
+      'Safer frontend logic with clearer contracts and maintainability.',
+      'Logica de frontend mas segura con contratos claros y mejor mantenibilidad.',
+    ),
     x: 80,
     y: 44,
     size: 42,
@@ -178,6 +205,10 @@ export const techNodes: TechNode[] = [
   {
     id: 'csharp',
     label: 'C#',
+    description: copy(
+      'Main language for backend logic, integrations, and business rules.',
+      'Lenguaje principal para logica backend, integraciones y reglas de negocio.',
+    ),
     x: 58,
     y: 63,
     size: 36,
@@ -194,6 +225,10 @@ export const techNodes: TechNode[] = [
   {
     id: 'dotnet',
     label: '.NET',
+    description: copy(
+      '.NET stack for APIs, services, and production-grade backend delivery.',
+      'Stack .NET para APIs, servicios y entrega backend lista para produccion.',
+    ),
     x: 68,
     y: 78,
     size: 48,
@@ -208,6 +243,10 @@ export const techNodes: TechNode[] = [
   {
     id: 'sqlserver',
     label: 'SQL Server',
+    description: copy(
+      'Operational database for core business data and reporting flows.',
+      'Base operativa para datos de negocio y flujos de reporte.',
+    ),
     x: 44,
     y: 79,
     size: 40,
@@ -225,6 +264,10 @@ export const techNodes: TechNode[] = [
   {
     id: 'postgres',
     label: 'PostgreSQL',
+    description: copy(
+      'Reliable relational store for structured data and service workloads.',
+      'Motor relacional confiable para datos estructurados y servicios.',
+    ),
     x: 30,
     y: 84,
     size: 44,
@@ -239,6 +282,10 @@ export const techNodes: TechNode[] = [
   {
     id: 'sqlite',
     label: 'SQLite',
+    description: copy(
+      'Lightweight local storage for embedded or offline scenarios.',
+      'Almacenamiento local liviano para escenarios embebidos u offline.',
+    ),
     x: 15,
     y: 74,
     size: 40,
@@ -253,6 +300,10 @@ export const techNodes: TechNode[] = [
   {
     id: 'docker',
     label: 'Docker',
+    description: copy(
+      'Consistent runtime packaging for local dev and deployment parity.',
+      'Empaquetado consistente para desarrollo local y paridad de despliegue.',
+    ),
     x: 11,
     y: 52,
     size: 44,
@@ -265,6 +316,10 @@ export const techNodes: TechNode[] = [
   {
     id: 'git',
     label: 'Git',
+    description: copy(
+      'Version control for safe iteration, review, and release flow.',
+      'Control de versiones para iterar, revisar y liberar con seguridad.',
+    ),
     x: 10,
     y: 35,
     size: 38,
@@ -277,6 +332,10 @@ export const techNodes: TechNode[] = [
   {
     id: 'chatfuel',
     label: 'Chatfuel',
+    description: copy(
+      'Conversational automation layer for bots, chat experiences, and lead flows.',
+      'Capa de automatizacion conversacional para bots, experiencias de chat y flujos de leads.',
+    ),
     x: 34,
     y: 57,
     size: 50,
@@ -292,6 +351,10 @@ export const techNodes: TechNode[] = [
   {
     id: 'n8n',
     label: 'n8n',
+    description: copy(
+      'Workflow automation for bots, integrations, and internal operational processes.',
+      'Automatizacion de flujos para bots, integraciones y procesos operativos internos.',
+    ),
     x: 24,
     y: 63,
     size: 44,
@@ -305,6 +368,10 @@ export const techNodes: TechNode[] = [
   {
     id: 'microsoft',
     label: 'Microsoft',
+    description: copy(
+      'Core ecosystem hub connecting cloud, productivity, and enterprise tools.',
+      'Hub principal que conecta cloud, productividad y herramientas enterprise.',
+    ),
     x: 45,
     y: 50,
     size: 48,
@@ -320,6 +387,10 @@ export const techNodes: TechNode[] = [
   {
     id: 'azure',
     label: 'Azure',
+    description: copy(
+      'Cloud layer for hosting, identity, integrations, and scaling services.',
+      'Capa cloud para hosting, identidad, integraciones y escalado de servicios.',
+    ),
     x: 58,
     y: 41,
     size: 42,
@@ -335,6 +406,10 @@ export const techNodes: TechNode[] = [
   {
     id: 'powerautomate',
     label: 'Power Automate',
+    description: copy(
+      'Low-code automation bridge for Microsoft-centric operational flows.',
+      'Puente low-code para flujos operativos centrados en Microsoft.',
+    ),
     x: 68,
     y: 43,
     size: 34,
@@ -352,6 +427,10 @@ export const techNodes: TechNode[] = [
   {
     id: 'outlook',
     label: 'Outlook',
+    description: copy(
+      'Messaging endpoint for notifications, routing, and user communication.',
+      'Canal de mensajeria para notificaciones, ruteo y comunicacion con usuarios.',
+    ),
     x: 84,
     y: 60,
     size: 34,
@@ -369,6 +448,10 @@ export const techNodes: TechNode[] = [
   {
     id: 'teams',
     label: 'Teams',
+    description: copy(
+      'Collaboration channel for alerts, approvals, and operational visibility.',
+      'Canal colaborativo para alertas, aprobaciones y visibilidad operativa.',
+    ),
     x: 77,
     y: 79,
     size: 34,
@@ -386,6 +469,10 @@ export const techNodes: TechNode[] = [
   {
     id: 'copilot',
     label: 'Copilot',
+    description: copy(
+      'AI assistance for faster implementation, drafting, and technical exploration.',
+      'Asistencia de IA para implementar, redactar y explorar soluciones mas rapido.',
+    ),
     x: 53,
     y: 29,
     size: 34,
@@ -400,6 +487,10 @@ export const techNodes: TechNode[] = [
   {
     id: 'al',
     label: 'AL',
+    description: copy(
+      'Business Central extension language for ERP customization and workflows.',
+      'Lenguaje de extensiones para customizar ERP y flujos en Business Central.',
+    ),
     x: 50,
     y: 72,
     size: 32,
@@ -464,6 +555,7 @@ export const brandStackIcons: TechGlyph[] = techNodes.map(({ id, label, icon, ic
 }));
 
 export const resolveTechBrand = (glyph: Pick<TechGlyph, 'icon' | 'brandHex'>) => getBrandHex(glyph);
+export const resolveTechDescription = (node: Pick<TechNode, 'description'>, locale: Locale) => node.description[locale];
 
 export const resolveTechTone = (glyph: Pick<TechGlyph, 'icon' | 'brandHex'>, theme: ThemeMode) => {
   const brand = getBrandHex(glyph);

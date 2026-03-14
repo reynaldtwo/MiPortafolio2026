@@ -1,0 +1,78 @@
+---
+import type { Locale } from '../../types/content';
+
+interface Props {
+  locale?: Locale;
+  title: string;
+  description: string;
+}
+
+const { locale = 'en', title, description } = Astro.props;
+const kicker = locale === 'es' ? 'Detalle del stack' : 'Stack detail';
+---
+
+<article class="constellation-info surface" data-constellation-info aria-live="polite">
+  <p class="kicker">{kicker}</p>
+  <strong data-constellation-info-title>{title}</strong>
+  <p data-constellation-info-description>{description}</p>
+</article>
+
+<style>
+  .constellation-info {
+    padding: 0.95rem 1rem;
+    display: grid;
+    gap: 0.34rem;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .constellation-info::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background: linear-gradient(
+      110deg,
+      color-mix(in srgb, var(--accent) 10%, transparent),
+      transparent 56%,
+      color-mix(in srgb, var(--accent-2) 10%, transparent)
+    );
+  }
+
+  .constellation-info > * {
+    position: relative;
+    z-index: 1;
+  }
+
+  .kicker {
+    margin: 0;
+    font-family: var(--font-mono);
+    font-size: 0.68rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--accent-2);
+  }
+
+  strong {
+    color: var(--text-0);
+    font-size: 0.98rem;
+    line-height: 1.1;
+  }
+
+  p:last-child {
+    margin: 0;
+    font-size: 0.86rem;
+    line-height: 1.45;
+    color: var(--text-1);
+  }
+
+  @media (max-width: 560px) {
+    .constellation-info {
+      padding: 0.88rem 0.9rem;
+    }
+
+    p:last-child {
+      font-size: 0.82rem;
+    }
+  }
+</style>
