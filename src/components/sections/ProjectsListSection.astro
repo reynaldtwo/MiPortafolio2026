@@ -45,13 +45,15 @@ const categories: ProjectCategory[] = ['all', 'flutter', 'backend', 'automation'
             data-testid={`project-card-${project.id}`}
           >
             <Card>
-              <div class="project-card stack-5">
+              <div class="project-card">
                 <header class="stack-4">
                   <div class="top-row">
                     <h3>{translateText(project.title, locale)}</h3>
-                    <div class="chip-row">
-                      {project.categories.map((category) => <Badge>{dict.filters[category]}</Badge>)}
-                    </div>
+                    {project.id !== 'quantix-multi-company-core' && (
+                      <div class="chip-row">
+                        {project.categories.map((category) => <Badge>{dict.filters[category]}</Badge>)}
+                      </div>
+                    )}
                   </div>
                   <p>{translateText(project.oneLiner, locale)}</p>
                 </header>
@@ -62,6 +64,12 @@ const categories: ProjectCategory[] = ['all', 'flutter', 'backend', 'automation'
                     <p>{translateText(project.problem, locale)}</p>
                     <div class="chip-row">
                       {project.roles.map((role) => <Badge>{translateText(role, locale)}</Badge>)}
+                    </div>
+                    <div class="project-stack-block stack-3">
+                      <h4>{dict.labels.stack}</h4>
+                      <div class="chip-row">
+                        {project.stack.map((tech) => <Badge>{tech}</Badge>)}
+                      </div>
                     </div>
                   </section>
 
@@ -77,22 +85,8 @@ const categories: ProjectCategory[] = ['all', 'flutter', 'backend', 'automation'
                   </section>
                 </div>
 
-                <section class="stack-4">
-                  <h4>{dict.labels.stack}</h4>
-                  <div class="chip-row">
-                    {project.stack.map((tech) => <Badge>{tech}</Badge>)}
-                  </div>
-                </section>
-
-                <div class="cta-row">
-                  <a href={`#${project.links.caseStudyAnchor}`} class="case-link">
-                    {dict.links.readCaseStudy}
-                  </a>
-                  {project.video && (
-                    <button type="button" class="inline-video-trigger" data-video-trigger>
-                      {dict.links.watchVideo}
-                    </button>
-                  )}
+                {(project.links.demo || project.links.repo) && (
+                  <div class="cta-row">
                   {project.links.demo && (
                     <Button href={project.links.demo} variant="secondary" target="_blank">
                       {dict.links.demo}
@@ -103,7 +97,8 @@ const categories: ProjectCategory[] = ['all', 'flutter', 'backend', 'automation'
                       {dict.links.repo}
                     </Button>
                   )}
-                </div>
+                  </div>
+                )}
 
                 <details class="case-study" data-case-study>
                   <summary>{dict.links.readCaseStudy}</summary>
@@ -132,40 +127,44 @@ const categories: ProjectCategory[] = ['all', 'flutter', 'backend', 'automation'
                     </section>
                   )}
                   <div class="case-study-body">
-                    <section>
-                      <h4>{dict.labels.context}</h4>
-                      <p>{translateText(project.caseStudy.context, locale)}</p>
-                    </section>
-                    <section>
-                      <h4>{dict.labels.constraints}</h4>
-                      <ul>
-                        {project.caseStudy.constraints.map((entry) => <li>{translateText(entry, locale)}</li>)}
-                      </ul>
-                    </section>
-                    <section>
-                      <h4>{dict.labels.solutionOverview}</h4>
-                      <ul>
-                        {project.caseStudy.solution.map((entry) => <li>{translateText(entry, locale)}</li>)}
-                      </ul>
-                    </section>
-                    <section>
-                      <h4>{dict.labels.keyDecisions}</h4>
-                      <ul>
-                        {project.caseStudy.decisions.map((entry) => <li>{translateText(entry, locale)}</li>)}
-                      </ul>
-                    </section>
-                    <section>
-                      <h4>{dict.labels.outcomes}</h4>
-                      <ul>
-                        {project.caseStudy.outcomes.map((entry) => <li>{translateText(entry, locale)}</li>)}
-                      </ul>
-                    </section>
-                    <section>
-                      <h4>{dict.labels.lessons}</h4>
-                      <ul>
-                        {project.caseStudy.lessons.map((entry) => <li>{translateText(entry, locale)}</li>)}
-                      </ul>
-                    </section>
+                    <div class="case-study-column stack-4">
+                      <section>
+                        <h4>{dict.labels.context}</h4>
+                        <p>{translateText(project.caseStudy.context, locale)}</p>
+                      </section>
+                      <section>
+                        <h4>{dict.labels.solutionOverview}</h4>
+                        <ul>
+                          {project.caseStudy.solution.map((entry) => <li>{translateText(entry, locale)}</li>)}
+                        </ul>
+                      </section>
+                      <section>
+                        <h4>{dict.labels.outcomes}</h4>
+                        <ul>
+                          {project.caseStudy.outcomes.map((entry) => <li>{translateText(entry, locale)}</li>)}
+                        </ul>
+                      </section>
+                    </div>
+                    <div class="case-study-column stack-4">
+                      <section>
+                        <h4>{dict.labels.constraints}</h4>
+                        <ul>
+                          {project.caseStudy.constraints.map((entry) => <li>{translateText(entry, locale)}</li>)}
+                        </ul>
+                      </section>
+                      <section>
+                        <h4>{dict.labels.keyDecisions}</h4>
+                        <ul>
+                          {project.caseStudy.decisions.map((entry) => <li>{translateText(entry, locale)}</li>)}
+                        </ul>
+                      </section>
+                      <section>
+                        <h4>{dict.labels.lessons}</h4>
+                        <ul>
+                          {project.caseStudy.lessons.map((entry) => <li>{translateText(entry, locale)}</li>)}
+                        </ul>
+                      </section>
+                    </div>
                   </div>
                 </details>
               </div>
@@ -182,8 +181,6 @@ const categories: ProjectCategory[] = ['all', 'flutter', 'backend', 'automation'
   if (root) {
     const filterButtons = root.querySelectorAll('[data-filter-button]');
     const cards = root.querySelectorAll('[data-project-card]');
-    const caseLinks = root.querySelectorAll('.case-link');
-    const videoTriggers = root.querySelectorAll('[data-video-trigger]');
     filterButtons.forEach((button) => {
       button.addEventListener('click', () => {
         const target = button.getAttribute('data-filter');
@@ -194,40 +191,6 @@ const categories: ProjectCategory[] = ['all', 'flutter', 'backend', 'automation'
           const show = target === 'all' || categories.split(',').includes(target ?? '');
           card.classList.toggle('is-hidden', !show);
         });
-      });
-    });
-    caseLinks.forEach((link) => {
-      link.addEventListener('click', (event) => {
-        event.preventDefault();
-        const card = link.closest('[data-project-card]');
-        const details = card?.querySelector('[data-case-study]');
-        if (details instanceof HTMLDetailsElement) {
-          details.open = true;
-          details.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-        }
-      });
-    });
-    videoTriggers.forEach((trigger) => {
-      trigger.addEventListener('click', () => {
-        const card = trigger.closest('[data-project-card]');
-        const details = card?.querySelector('[data-case-study]');
-        const media = card?.querySelector('[data-case-study-media]');
-        const iframe = card?.querySelector('[data-video-iframe]');
-        if (details instanceof HTMLDetailsElement) {
-          details.open = true;
-        }
-        if (iframe instanceof HTMLIFrameElement) {
-          const baseSrc = iframe.dataset.baseSrc ?? iframe.src;
-          const autoplaySrc = `${baseSrc}${baseSrc.includes('?') ? '&' : '?'}autoplay=1`;
-          if (iframe.src !== autoplaySrc) {
-            iframe.src = autoplaySrc;
-          }
-        }
-        if (media instanceof HTMLElement) {
-          requestAnimationFrame(() => {
-            media.scrollIntoView({ behavior: 'smooth', block: 'center' });
-          });
-        }
       });
     });
     cards.forEach((card) => {
@@ -294,6 +257,8 @@ const categories: ProjectCategory[] = ['all', 'flutter', 'backend', 'automation'
 
   .project-card {
     position: relative;
+    display: grid;
+    gap: var(--space-4);
   }
 
   .top-row {
@@ -320,6 +285,10 @@ const categories: ProjectCategory[] = ['all', 'flutter', 'backend', 'automation'
     gap: var(--space-4);
   }
 
+  .project-stack-block {
+    padding-top: var(--space-2);
+  }
+
   ul {
     margin: 0;
     padding-left: 1.1rem;
@@ -333,48 +302,6 @@ const categories: ProjectCategory[] = ['all', 'flutter', 'backend', 'automation'
     align-items: center;
     flex-wrap: wrap;
     gap: var(--space-3);
-  }
-
-  .inline-video-trigger {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    gap: 0.5rem;
-    border-radius: var(--radius-pill);
-    border: 1px solid var(--stroke);
-    background: transparent;
-    color: var(--text-1);
-    padding: 0.72rem 1.15rem;
-    font-weight: 600;
-    letter-spacing: 0.01em;
-    transition:
-      transform var(--motion-fast) var(--motion-ease),
-      border-color var(--motion-fast) var(--motion-ease),
-      background-color var(--motion-fast) var(--motion-ease),
-      color var(--motion-fast) var(--motion-ease);
-  }
-
-  .inline-video-trigger:hover {
-    transform: translateY(-2px);
-    color: var(--text-0);
-    border-color: var(--stroke-strong);
-    background: color-mix(in srgb, var(--card) 90%, transparent);
-  }
-
-  .inline-video-trigger:active {
-    transform: translateY(0) scale(0.98);
-  }
-
-  .case-link {
-    text-decoration: underline transparent;
-    text-underline-offset: 4px;
-    font-weight: 600;
-    color: var(--card-text-1);
-  }
-
-  .case-link:hover {
-    color: var(--card-text-0);
-    text-decoration-color: var(--accent-2);
   }
 
   .case-study {
@@ -455,6 +382,10 @@ const categories: ProjectCategory[] = ['all', 'flutter', 'backend', 'automation'
     grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: var(--space-4);
     animation: case-open var(--motion-base) var(--motion-ease);
+  }
+
+  .case-study-column {
+    min-width: 0;
   }
 
   @keyframes case-open {

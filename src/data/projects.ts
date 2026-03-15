@@ -25,8 +25,8 @@ export const projects: Project[] = [
     stack: ['C#', '.NET', 'Azure SQL Database'],
     architecture: [
       {
-        en: 'Modular core for inventory, billing, reporting, catalogs, and configuration.',
-        es: 'Nucleo modular para inventario, facturacion, reporteria, catalogos y configuracion.',
+        en: 'Clean Architecture core for inventory, billing, reporting, catalogs, and configuration.',
+        es: 'Nucleo en Clean Architecture para inventario, facturacion, reporteria, catalogos y configuracion.',
       },
       {
         en: 'Multi-company and multi-branch model with isolated operational context inside one shared platform.',
