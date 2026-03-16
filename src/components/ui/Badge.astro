@@ -30,4 +30,14 @@ const { active = false } = Astro.props;
     background: color-mix(in srgb, var(--accent) 24%, transparent);
     color: var(--text-0);
   }
+
+  :global([data-theme='light']) .badge {
+    background:
+      radial-gradient(circle at 18% 18%, rgba(255, 255, 255, 0.78), transparent 28%),
+      linear-gradient(160deg, rgba(255, 255, 255, 0.97), rgba(246, 249, 253, 0.88) 60%, rgba(239, 244, 248, 0.9) 100%);
+    border-color: color-mix(in srgb, var(--stroke) 92%, rgba(255, 255, 255, 0.8));
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.76),
+      0 6px 14px rgba(15, 28, 46, 0.04);
+  }
 </style>

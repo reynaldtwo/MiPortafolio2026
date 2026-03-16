@@ -92,6 +92,19 @@ const { padded = true } = Astro.props;
     padding: var(--card-padding);
   }
 
+  :global([data-theme='light']) .card {
+    background:
+      radial-gradient(circle at 14% 16%, rgba(255, 255, 255, 0.84), transparent 28%),
+      linear-gradient(160deg, rgba(255, 255, 255, 0.99), rgba(246, 249, 253, 0.94) 56%, rgba(238, 244, 250, 0.96) 100%),
+      var(--card);
+    border-color: color-mix(in srgb, var(--stroke) 94%, rgba(255, 255, 255, 0.82));
+    box-shadow:
+      var(--shadow-soft),
+      inset 0 1px 0 rgba(255, 255, 255, 0.9),
+      inset 0 -1px 0 rgba(16, 29, 47, 0.04);
+    backdrop-filter: blur(10px);
+  }
+
   .card:hover,
   .card:focus-within {
     transform: translateY(-2px);
@@ -100,10 +113,27 @@ const { padded = true } = Astro.props;
     background: color-mix(in srgb, var(--card) 94%, #ffffff 6%);
   }
 
+  :global([data-theme='light']) .card:hover,
+  :global([data-theme='light']) .card:focus-within {
+    background:
+      radial-gradient(circle at 16% 18%, rgba(255, 255, 255, 0.9), transparent 30%),
+      linear-gradient(160deg, rgba(255, 255, 255, 1), rgba(247, 250, 254, 0.97) 58%, rgba(240, 246, 251, 0.99) 100%),
+      var(--card);
+    box-shadow:
+      var(--shadow-lift),
+      inset 0 1px 0 rgba(255, 255, 255, 0.92),
+      inset 0 -1px 0 rgba(16, 29, 47, 0.05);
+  }
+
   .card:hover::before,
   .card:focus-within::before {
     opacity: 0.68;
     transform: translate(-50%, -50%) rotate(34deg) scale(1.06);
+  }
+
+  :global([data-theme='light']) .card:hover::before,
+  :global([data-theme='light']) .card:focus-within::before {
+    opacity: 0.48;
   }
 
   .card:hover::after,

@@ -45,4 +45,14 @@ const targetPath = switchLocalePath(pathname, targetLocale);
     background: color-mix(in srgb, var(--card) 96%, color-mix(in srgb, var(--accent) 8%, transparent));
     color: var(--text-0);
   }
+
+  :global([data-theme='light']) .lang-switch {
+    background:
+      radial-gradient(circle at 18% 18%, rgba(255, 255, 255, 0.82), transparent 28%),
+      linear-gradient(160deg, rgba(255, 255, 255, 0.99), rgba(246, 249, 253, 0.94) 60%, rgba(238, 244, 250, 0.95) 100%);
+    border-color: color-mix(in srgb, var(--stroke) 96%, rgba(255, 255, 255, 0.8));
+    box-shadow:
+      0 10px 18px rgba(15, 28, 46, 0.05),
+      inset 0 1px 0 rgba(255, 255, 255, 0.86);
+  }
 </style>

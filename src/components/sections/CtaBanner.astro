@@ -67,7 +67,12 @@ const { title, primary, secondary } = Astro.props;
   }
 
   @media (max-width: 680px) {
-    .row a {
+    .row {
+      display: grid;
+      grid-template-columns: 1fr;
+    }
+
+    .row :global(.btn) {
       width: 100%;
     }
   }

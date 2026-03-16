@@ -208,6 +208,18 @@ const footerLinks = [
     flex-wrap: wrap;
   }
 
+  :global([data-theme='light']) .footer-shell {
+    background:
+      radial-gradient(circle at 14% 18%, rgba(255, 255, 255, 0.82), transparent 28%),
+      linear-gradient(160deg, rgba(255, 255, 255, 0.99), rgba(246, 249, 253, 0.94) 56%, rgba(238, 244, 250, 0.96) 100%),
+      var(--card);
+    border-color: color-mix(in srgb, var(--stroke) 96%, rgba(255, 255, 255, 0.82));
+    box-shadow:
+      var(--shadow-soft),
+      inset 0 1px 0 rgba(255, 255, 255, 0.88),
+      inset 0 -1px 0 rgba(16, 29, 47, 0.04);
+  }
+
   .footer-line {
     color: var(--text-0);
     font-weight: 600;

@@ -101,7 +101,13 @@ const calendlyIconPath =
           data-menu-toggle
           aria-label={dict.labels.mobileMenu}
         >
-          <span></span><span></span><span></span>
+          <span class="menu-btn__inner" aria-hidden="true">
+            <span class="menu-btn__panel"></span>
+            <span class="menu-btn__rail"></span>
+            <span class="menu-btn__line menu-btn__line--top"></span>
+            <span class="menu-btn__line menu-btn__line--bottom"></span>
+            <span class="menu-btn__dot"></span>
+          </span>
         </button>
       </div>
     </div>
@@ -110,17 +116,25 @@ const calendlyIconPath =
   <div id="mobile-nav" class="mobile-nav" data-mobile-nav hidden>
     <div class="mobile-nav-inner surface">
       <div class="mobile-head">
-        <div>
+        <div class="mobile-brand-block">
           <strong>{siteConfig.brandName}</strong>
-          <small>Menú</small>
         </div>
-        <button type="button" data-menu-close aria-label={dict.labels.closeMenu}>x</button>
+        <button class="mobile-close" type="button" data-menu-close aria-label={dict.labels.closeMenu}>
+          <span></span><span></span>
+        </button>
       </div>
       <nav class="mobile-links" aria-label="Mobile primary">
         {
-          navItems.map((item) => (
+          navItems.map((item, index) => (
             <a class:list={['mobile-link', { active: item.active }]} href={item.href}>
-              {item.label}
+              <span class="mobile-link__index">{String(index + 1).padStart(2, '0')}</span>
+              <span class="mobile-link__label">{item.label}</span>
+              <span class="mobile-link__arrow" aria-hidden="true">
+                <svg viewBox="0 0 24 24" focusable="false">
+                  <path d="M8 12h8"></path>
+                  <path d="M12 8l4 4-4 4"></path>
+                </svg>
+              </span>
             </a>
           ))
         }
@@ -222,6 +236,17 @@ const calendlyIconPath =
     border-bottom: 1px solid color-mix(in srgb, var(--stroke) 86%, transparent);
   }
 
+  :global([data-theme='light']) .header {
+    background:
+      linear-gradient(180deg, rgba(255, 255, 255, 0.94), rgba(243, 248, 253, 0.84)),
+      color-mix(in srgb, var(--bg-1) 84%, transparent);
+    border-bottom-color: color-mix(in srgb, var(--stroke) 96%, rgba(255, 255, 255, 0.82));
+    box-shadow:
+      0 20px 40px rgba(15, 28, 46, 0.08),
+      inset 0 1px 0 rgba(255, 255, 255, 0.76),
+      inset 0 -1px 0 rgba(16, 29, 47, 0.04);
+  }
+
   .nav-shell {
     min-height: 4.6rem;
     display: flex;
@@ -275,6 +300,17 @@ const calendlyIconPath =
     background: color-mix(in srgb, var(--card) 92%, transparent);
   }
 
+  :global([data-theme='light']) .desktop-nav {
+    background:
+      radial-gradient(circle at 14% 18%, rgba(255, 255, 255, 0.84), transparent 28%),
+      linear-gradient(160deg, rgba(255, 255, 255, 0.99), rgba(246, 249, 253, 0.94) 60%, rgba(238, 244, 250, 0.95) 100%);
+    border-color: color-mix(in srgb, var(--stroke) 96%, rgba(255, 255, 255, 0.84));
+    box-shadow:
+      0 12px 24px rgba(15, 28, 46, 0.06),
+      inset 0 1px 0 rgba(255, 255, 255, 0.88),
+      inset 0 -1px 0 rgba(16, 29, 47, 0.04);
+  }
+
   .nav-link {
     position: relative;
     color: var(--card-text-1);
@@ -295,6 +331,26 @@ const calendlyIconPath =
     color: var(--text-0);
     background: color-mix(in srgb, var(--accent) 20%, color-mix(in srgb, var(--card) 88%, transparent));
     box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--accent) 24%, transparent);
+  }
+
+  :global([data-theme='light']) .nav-link:hover,
+  :global([data-theme='light']) .nav-link:focus-visible {
+    color: var(--text-0);
+    background:
+      linear-gradient(160deg, rgba(255, 255, 255, 0.99), rgba(244, 248, 253, 0.92) 64%, rgba(237, 243, 249, 0.92) 100%);
+    box-shadow:
+      inset 0 0 0 1px color-mix(in srgb, var(--stroke-strong) 70%, rgba(255, 255, 255, 0.18)),
+      0 8px 16px rgba(15, 28, 46, 0.05);
+  }
+
+  :global([data-theme='light']) .nav-link.active,
+  :global([data-theme='light']) .nav-link.active:hover,
+  :global([data-theme='light']) .nav-link.active:focus-visible {
+    color: #fbf8f2;
+    background: linear-gradient(140deg, #0d1d4a 0%, #1748b6 56%, #0c8a92 148%);
+    box-shadow:
+      0 12px 22px rgba(13, 29, 74, 0.18),
+      inset 0 1px 0 rgba(255, 255, 255, 0.12);
   }
 
   .actions {
@@ -330,6 +386,25 @@ const calendlyIconPath =
   .desktop-cta :global(.header-cta) {
     border-color: color-mix(in srgb, var(--stroke) 92%, transparent);
     background: color-mix(in srgb, var(--card) 90%, transparent);
+  }
+
+  :global([data-theme='light']) .desktop-cta :global(.header-cta) {
+    background:
+      radial-gradient(circle at 18% 18%, rgba(255, 255, 255, 0.8), transparent 28%),
+      linear-gradient(160deg, rgba(255, 255, 255, 0.99), rgba(246, 249, 253, 0.94) 58%, rgba(238, 244, 250, 0.95) 100%);
+    box-shadow:
+      0 10px 18px rgba(15, 28, 46, 0.06),
+      inset 0 1px 0 rgba(255, 255, 255, 0.86);
+  }
+
+  :global([data-theme='light']) .desktop-cta :global(.header-cta:hover),
+  :global([data-theme='light']) .desktop-cta :global(.header-cta:focus-visible) {
+    background:
+      radial-gradient(circle at 18% 18%, rgba(255, 255, 255, 0.88), transparent 30%),
+      linear-gradient(160deg, rgba(255, 255, 255, 1), rgba(247, 250, 254, 0.96) 58%, rgba(240, 246, 251, 0.97) 100%);
+    box-shadow:
+      0 14px 22px rgba(15, 28, 46, 0.08),
+      inset 0 1px 0 rgba(255, 255, 255, 0.9);
   }
 
   .desktop-cta :global(.header-cta:hover),
@@ -414,17 +489,118 @@ const calendlyIconPath =
 
   .menu-btn {
     display: none;
-    width: 2.4rem;
-    height: 2.4rem;
-    border-radius: 999px;
+    width: 2.7rem;
+    height: 2.7rem;
+    border-radius: 1rem;
     border: 1px solid var(--stroke);
     background: color-mix(in srgb, var(--card) 85%, transparent);
     padding: 0;
     place-items: center;
+    position: relative;
+    overflow: hidden;
+    box-shadow:
+      0 10px 18px rgba(8, 19, 35, 0.08),
+      inset 0 1px 0 rgba(255, 255, 255, 0.06);
     transition:
       border-color var(--motion-fast) var(--motion-ease),
       background var(--motion-fast) var(--motion-ease),
-      transform var(--motion-fast) var(--motion-ease);
+      transform var(--motion-fast) var(--motion-ease),
+      box-shadow var(--motion-fast) var(--motion-ease),
+      opacity var(--motion-fast) var(--motion-ease);
+  }
+
+  .menu-btn::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(circle at 22% 20%, color-mix(in srgb, var(--accent) 14%, transparent), transparent 36%),
+      linear-gradient(160deg, color-mix(in srgb, var(--card) 95%, transparent), color-mix(in srgb, var(--bg-2) 56%, transparent));
+    opacity: 0.96;
+    pointer-events: none;
+  }
+
+  .menu-btn__inner {
+    position: relative;
+    width: 1.18rem;
+    height: 0.96rem;
+    z-index: 1;
+  }
+
+  .menu-btn__panel {
+    position: absolute;
+    inset: 0;
+    border-radius: 0.42rem;
+    border: 1px solid color-mix(in srgb, var(--stroke-strong) 26%, transparent);
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.1), transparent);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08);
+    transition:
+      border-color var(--motion-fast) var(--motion-ease),
+      background var(--motion-fast) var(--motion-ease),
+      box-shadow var(--motion-fast) var(--motion-ease);
+  }
+
+  .menu-btn__rail {
+    position: absolute;
+    left: 0.08rem;
+    top: 0.08rem;
+    bottom: 0.08rem;
+    width: 0.16rem;
+    border-radius: 999px;
+    background: linear-gradient(180deg, var(--accent), var(--accent-2));
+    box-shadow: 0 0 12px color-mix(in srgb, var(--accent) 28%, transparent);
+    transition:
+      transform var(--motion-base) var(--motion-ease),
+      box-shadow var(--motion-base) var(--motion-ease);
+  }
+
+  .menu-btn__line {
+    position: absolute;
+    left: 0.38rem;
+    height: 1.8px;
+    border-radius: 999px;
+    background: var(--text-0);
+    transition:
+      transform var(--motion-base) var(--motion-ease),
+      width var(--motion-base) var(--motion-ease),
+      background var(--motion-fast) var(--motion-ease),
+      opacity var(--motion-fast) var(--motion-ease);
+  }
+
+  .menu-btn__line--top {
+    top: 0.22rem;
+    width: 0.58rem;
+  }
+
+  .menu-btn__line--bottom {
+    top: 0.48rem;
+    width: 0.44rem;
+  }
+
+  .menu-btn__dot {
+    position: absolute;
+    left: 0.38rem;
+    bottom: 0.16rem;
+    width: 0.18rem;
+    height: 0.18rem;
+    border-radius: 999px;
+    background: color-mix(in srgb, var(--accent) 78%, white 22%);
+    box-shadow:
+      0 0 0 3px color-mix(in srgb, var(--accent) 14%, transparent),
+      0 0 10px color-mix(in srgb, var(--accent) 22%, transparent);
+    transition:
+      transform var(--motion-base) var(--motion-ease),
+      box-shadow var(--motion-base) var(--motion-ease),
+      background var(--motion-fast) var(--motion-ease);
+  }
+
+  :global([data-theme='light']) .menu-btn {
+    background:
+      radial-gradient(circle at 18% 18%, rgba(255, 255, 255, 0.82), transparent 28%),
+      linear-gradient(160deg, rgba(255, 255, 255, 0.99), rgba(246, 249, 253, 0.94) 60%, rgba(238, 244, 250, 0.95) 100%);
+    box-shadow:
+      0 12px 20px rgba(15, 28, 46, 0.06),
+      inset 0 1px 0 rgba(255, 255, 255, 0.88);
   }
 
   .menu-btn:hover,
@@ -432,20 +608,49 @@ const calendlyIconPath =
     transform: translateY(-1px);
     border-color: var(--stroke-strong);
     background: color-mix(in srgb, var(--card) 96%, color-mix(in srgb, var(--accent) 8%, transparent));
+    box-shadow:
+      0 14px 22px rgba(8, 19, 35, 0.12),
+      inset 0 1px 0 rgba(255, 255, 255, 0.1);
   }
 
-  .menu-btn span {
-    display: block;
-    width: 1rem;
-    height: 1.5px;
-    margin: 2px auto;
-    background: var(--text-0);
+  .menu-btn:hover .menu-btn__rail,
+  .menu-btn:focus-visible .menu-btn__rail {
+    transform: scaleY(1.05);
+    box-shadow: 0 0 16px color-mix(in srgb, var(--accent) 34%, transparent);
+  }
+
+  .menu-btn[aria-expanded='true'] {
+    opacity: 0;
+    pointer-events: none;
+    transform: scale(0.88);
+  }
+
+  .menu-btn:hover .menu-btn__line--top,
+  .menu-btn:focus-visible .menu-btn__line--top {
+    width: 0.64rem;
+    transform: translateX(0.02rem);
+  }
+
+  .menu-btn:hover .menu-btn__line--bottom,
+  .menu-btn:focus-visible .menu-btn__line--bottom {
+    width: 0.5rem;
+    transform: translateX(0.04rem);
+  }
+
+  .menu-btn:hover .menu-btn__dot,
+  .menu-btn:focus-visible .menu-btn__dot {
+    transform: scale(1.1);
+    box-shadow:
+      0 0 0 4px color-mix(in srgb, var(--accent) 16%, transparent),
+      0 0 14px color-mix(in srgb, var(--accent) 28%, transparent);
   }
 
   .mobile-nav {
     position: fixed;
     inset: 0;
-    background: color-mix(in srgb, var(--bg-0) 78%, transparent);
+    background:
+      radial-gradient(circle at 50% 0%, color-mix(in srgb, var(--accent) 12%, transparent), transparent 30%),
+      color-mix(in srgb, var(--bg-0) 78%, transparent);
     backdrop-filter: blur(12px);
     padding: var(--surface-padding-sm);
     opacity: 0;
@@ -457,77 +662,238 @@ const calendlyIconPath =
   }
 
   .mobile-nav-inner {
-    max-width: 420px;
-    margin-left: auto;
-    padding: var(--space-5);
-    transform: translateX(16px);
+    position: relative;
+    width: min(100%, 430px);
+    margin-inline: auto;
+    padding: clamp(1.15rem, 3.4vw, 1.45rem);
+    border-radius: 1.9rem;
+    overflow: hidden;
+    transform: translateY(18px) scale(0.98);
     opacity: 0;
     transition:
       transform var(--motion-base) var(--motion-ease),
       opacity var(--motion-base) var(--motion-ease);
   }
 
+  .mobile-nav-inner::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(circle at 16% 14%, color-mix(in srgb, var(--accent) 14%, transparent), transparent 28%),
+      radial-gradient(circle at 84% 86%, color-mix(in srgb, var(--accent-2) 14%, transparent), transparent 32%);
+    pointer-events: none;
+  }
+
+  .mobile-nav-inner::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    border: 1px solid color-mix(in srgb, var(--stroke-strong) 34%, transparent);
+    opacity: 0.56;
+    pointer-events: none;
+  }
+
   .mobile-nav.is-open .mobile-nav-inner {
-    transform: translateX(0);
+    transform: translateY(0) scale(1);
     opacity: 1;
   }
 
   .mobile-head {
     display: flex;
-    align-items: start;
+    align-items: center;
     justify-content: space-between;
-    margin-bottom: var(--space-5);
+    margin-bottom: var(--space-4);
+    padding-bottom: var(--space-4);
+    position: relative;
+    z-index: 1;
+  }
+
+  .mobile-head::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 1px;
+    background: linear-gradient(90deg, color-mix(in srgb, var(--accent) 28%, transparent), color-mix(in srgb, var(--stroke) 90%, transparent), transparent);
+  }
+
+  .mobile-brand-block {
+    min-width: 0;
   }
 
   .mobile-head strong {
     display: block;
     font-family: var(--font-heading);
     color: var(--text-0);
+    font-size: 1.08rem;
+    letter-spacing: -0.02em;
   }
 
   .mobile-head small {
-    font-family: var(--font-mono);
-    font-size: 0.72rem;
-    color: var(--muted);
+    display: none;
   }
 
-  .mobile-head button {
-    border: 0;
-    background: transparent;
-    color: var(--text-0);
-    font-size: 1.1rem;
-    text-transform: uppercase;
+  .mobile-close {
+    position: relative;
+    width: 2.35rem;
+    height: 2.35rem;
+    border-radius: 999px;
+    border: 1px solid color-mix(in srgb, var(--stroke) 94%, transparent);
+    background: color-mix(in srgb, var(--card) 88%, transparent);
+    padding: 0;
+    flex: 0 0 auto;
+    box-shadow:
+      0 10px 16px rgba(8, 19, 35, 0.08),
+      inset 0 1px 0 rgba(255, 255, 255, 0.08);
+    transition:
+      transform var(--motion-fast) var(--motion-ease),
+      border-color var(--motion-fast) var(--motion-ease),
+      background var(--motion-fast) var(--motion-ease),
+      box-shadow var(--motion-fast) var(--motion-ease);
+  }
+
+  .mobile-close span {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: 0.94rem;
+    height: 1.8px;
+    border-radius: 999px;
+    background: var(--text-0);
+  }
+
+  .mobile-close span:first-child {
+    transform: translate(-50%, -50%) rotate(45deg);
+  }
+
+  .mobile-close span:last-child {
+    transform: translate(-50%, -50%) rotate(-45deg);
+  }
+
+  .mobile-close:hover,
+  .mobile-close:focus-visible {
+    transform: translateY(-1px);
+    border-color: var(--stroke-strong);
+    background: color-mix(in srgb, var(--card) 96%, color-mix(in srgb, var(--accent) 8%, transparent));
+    box-shadow:
+      0 14px 20px rgba(8, 19, 35, 0.12),
+      inset 0 1px 0 rgba(255, 255, 255, 0.1);
   }
 
   .mobile-links {
     display: grid;
-    gap: var(--space-3);
+    gap: 0.7rem;
     margin-bottom: var(--space-5);
+    position: relative;
+    z-index: 1;
   }
 
   .mobile-link {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    align-items: center;
+    column-gap: 0.85rem;
     color: var(--text-1);
     font-size: 1rem;
-    padding: 0.45rem 0.6rem;
-    border-radius: 0.7rem;
-    border: 1px solid transparent;
+    font-weight: 600;
+    padding: 0.92rem 1rem;
+    border-radius: 1.1rem;
+    border: 1px solid color-mix(in srgb, var(--stroke) 88%, transparent);
+    background: color-mix(in srgb, var(--card) 84%, transparent);
+    box-shadow:
+      0 12px 20px rgba(8, 19, 35, 0.05),
+      inset 0 1px 0 rgba(255, 255, 255, 0.08);
     transition:
+      transform var(--motion-fast) var(--motion-ease),
       color var(--motion-fast) var(--motion-ease),
       border-color var(--motion-fast) var(--motion-ease),
-      background-color var(--motion-fast) var(--motion-ease);
+      background var(--motion-fast) var(--motion-ease),
+      box-shadow var(--motion-fast) var(--motion-ease);
+  }
+
+  .mobile-link__index {
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    letter-spacing: 0.08em;
+    color: var(--muted);
+  }
+
+  .mobile-link__label {
+    min-width: 0;
+    color: currentColor;
+  }
+
+  .mobile-link__arrow {
+    width: 1.75rem;
+    height: 1.75rem;
+    border-radius: 999px;
+    display: inline-grid;
+    place-items: center;
+    border: 1px solid color-mix(in srgb, var(--stroke) 86%, transparent);
+    background: color-mix(in srgb, var(--card) 92%, transparent);
+    color: color-mix(in srgb, var(--accent) 64%, var(--text-0));
+  }
+
+  .mobile-link__arrow svg {
+    width: 0.85rem;
+    height: 0.85rem;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
   }
 
   .mobile-link.active,
   .mobile-link:hover,
   .mobile-link:focus-visible {
+    transform: translateX(2px);
     color: var(--text-0);
     border-color: var(--stroke-strong);
-    background: color-mix(in srgb, var(--card) 94%, color-mix(in srgb, var(--accent) 8%, transparent));
+    background: color-mix(in srgb, var(--card) 96%, color-mix(in srgb, var(--accent) 10%, transparent));
+    box-shadow:
+      0 16px 24px rgba(8, 19, 35, 0.08),
+      inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  }
+
+  .mobile-link.active {
+    color: #f6fbff;
+    border-color: color-mix(in srgb, var(--accent) 46%, transparent);
+    background:
+      linear-gradient(145deg, color-mix(in srgb, var(--accent-strong) 88%, #091420 12%), color-mix(in srgb, var(--accent) 72%, var(--accent-2) 28%));
+    box-shadow:
+      0 18px 30px rgba(9, 20, 32, 0.22),
+      inset 0 1px 0 rgba(255, 255, 255, 0.14);
+  }
+
+  .mobile-link.active .mobile-link__index {
+    color: rgba(246, 251, 255, 0.74);
+  }
+
+  .mobile-link.active .mobile-link__arrow {
+    border-color: rgba(255, 255, 255, 0.18);
+    background: rgba(255, 255, 255, 0.12);
+    color: #f6fbff;
   }
 
   .mobile-cta :global(.header-cta) {
     justify-content: center;
     --header-cta-accent: var(--stroke);
+  }
+
+  .mobile-cta {
+    position: relative;
+    z-index: 1;
+    padding-top: var(--space-4);
+    border-top: 1px solid color-mix(in srgb, var(--stroke) 90%, transparent);
+  }
+
+  .mobile-cta :global(.btn) {
+    min-height: 3rem;
+    border-radius: 1.15rem;
   }
 
   .mobile-cta :global(.header-cta--pdf) {
