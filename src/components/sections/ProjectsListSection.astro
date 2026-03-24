@@ -3,7 +3,7 @@ import Card from '../ui/Card.astro';
 import Badge from '../ui/Badge.astro';
 import Button from '../ui/Button.astro';
 import type { I18nDictionary } from '../../data/i18n';
-import type { Locale, Project, ProjectCategory } from '../../types/content';
+import type { Locale, Project } from '../../types/content';
 import { translateText } from '../../utils/projects';
 
 interface Props {
@@ -13,25 +13,11 @@ interface Props {
 }
 
 const { projects, locale, dict } = Astro.props;
-const categories: ProjectCategory[] = ['all', 'flutter', 'backend', 'automation', 'integrations'];
 ---
 
 <section class="section" data-projects-section>
   <div class="container stack-5">
-    <div class="filter-bar reveal" data-reveal>
-      {
-        categories.map((category, index) => (
-          <button
-            type="button"
-            class:list={['filter-chip', { active: index === 0 }]}
-            data-filter-button
-            data-filter={category}
-          >
-            {dict.filters[category]}
-          </button>
-        ))
-      }
-    </div>
+
 
     <div class="projects-list stack-5">
       {
@@ -49,11 +35,7 @@ const categories: ProjectCategory[] = ['all', 'flutter', 'backend', 'automation'
                 <header class="stack-4">
                   <div class="top-row">
                     <h3>{translateText(project.title, locale)}</h3>
-                    {!['quantix-multi-company-core', 'ls-central-statement-insufficiency-control'].includes(project.id) && (
-                      <div class="chip-row">
-                        {project.categories.map((category) => <Badge>{dict.filters[category]}</Badge>)}
-                      </div>
-                    )}
+
                   </div>
                   <p>{translateText(project.oneLiner, locale)}</p>
                 </header>

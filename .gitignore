@@ -30,10 +30,16 @@ AGENTS.md
 .start-test.txt
 dev-server.err
 dev-server.log
+astro_check.log
+astro_check_output.txt
+build.log
+build_error.log
+check.log
 gen-sun.js
 new_sun.txt
 sun-path.txt
 sun.txt
+original_header.astro
 *.tmp-shots*.png
 
 

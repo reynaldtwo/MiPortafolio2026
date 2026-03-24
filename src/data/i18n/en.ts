@@ -33,7 +33,7 @@ export const en = {
     relatedProject: 'Related project',
     readCaseStudy: 'Read case study',
     watchVideo: 'Watch video',
-    demo: 'Demo',
+    demo: 'Visit website',
     repo: 'Repo',
   },
   labels: {
@@ -86,12 +86,12 @@ export const en = {
   },
   home: {
     hero: {
-      title: 'Production-ready fullstack developer: Flutter-first UX, reliable APIs, and real integrations.',
+      title: 'I design and build complete enterprise systems connecting operations, data, and real integrations',
       subline: 'Business-minded engineering: architecture, execution, and outcomes.',
       constellationTitle: 'My stack',
       paragraph:
         '15 years in IT across support, operations, QA, development, and system architecture. I build software that survives real-world operations.',
-      proofChips: ['Flutter-first', 'Fullstack', 'ERP/POS Integrations', 'Offline-ready'],
+      proofChips: ['Fullstack', 'ERP/POS Integrations', 'Offline-First'],
     },
     pillars: {
       title: 'What you get working with me',
@@ -123,13 +123,13 @@ export const en = {
       title: 'At a glance',
       metrics: [
         { value: '15+', label: 'Years in IT' },
-        { value: '9 sites', label: 'Multi-branch rollouts' },
+        { value: '10+', label: 'Systems delivered to real operations' },
         { value: 'ERP/POS', label: 'Integrations in production' },
         { value: 'Remote', label: 'International collaboration' },
       ],
     },
     finalCta: {
-      title: 'Need an engineer who can design and ship end-to-end?',
+      title: 'Need help shipping a product end to end?',
     },
   },
   systems: {
@@ -253,19 +253,19 @@ export const en = {
   },
   projects: {
     hero: {
-      title: 'Selected projects built for real operations.',
-      subline: 'Concise case studies with architecture choices and measurable outcomes.',
+      title: 'A selection of projects in production.',
+      subline: 'Real-world cases reflecting the experience built in systems development and integration.',
     },
   },
   contact: {
     hero: {
       title: "Let's talk.",
-      subline: 'Remote | International | Fullstack (Flutter-first)',
+      subline: 'Remote | International | Fullstack',
     },
     linksTitle: 'Direct channels',
     availability: {
       text: 'Open to full-time remote roles, contract work, and high-ownership consulting engagements.',
-      chips: ['Fullstack', 'Flutter', 'Integrations', 'Automation'],
+      chips: ['Fullstack', 'Integrations', 'Automation'],
     },
   },
   notFound: {

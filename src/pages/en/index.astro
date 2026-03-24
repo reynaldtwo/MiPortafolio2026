@@ -2,16 +2,11 @@
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import HeroSection from '../../components/sections/HeroSection.astro';
 import PillarsSection from '../../components/sections/PillarsSection.astro';
-import FeaturedProjectsSection from '../../components/sections/FeaturedProjectsSection.astro';
 import CtaBanner from '../../components/sections/CtaBanner.astro';
 import { getDictionary } from '../../data/i18n';
-import { projects } from '../../data/projects';
-import { siteConfig } from '../../data/site';
-import { getFeaturedProjects } from '../../utils/projects';
 
 const locale = 'en';
 const dict = getDictionary(locale);
-const featuredProjects = getFeaturedProjects(projects);
 const pathname = '/en/';
 ---
 
@@ -36,16 +31,5 @@ const pathname = '/en/';
   />
 
   <PillarsSection title={dict.home.pillars.title} items={dict.home.pillars.items} />
-  <FeaturedProjectsSection
-    title={dict.home.featured.title}
-    projects={featuredProjects}
-    locale={locale}
-    dict={dict}
-    projectsHref="/en/projects"
-  />
-  <CtaBanner
-    title={dict.home.finalCta.title}
-    primary={{ label: dict.ctas.schedule, href: siteConfig.contact.booking, target: '_blank' }}
-    secondary={{ label: dict.ctas.email, href: siteConfig.contact.email }}
-  />
+  <CtaBanner title={dict.home.finalCta.title} primary={{ label: dict.nav.contact, href: '/en/contact' }} />
 </BaseLayout>

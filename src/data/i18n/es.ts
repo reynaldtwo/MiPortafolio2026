@@ -37,7 +37,7 @@ export const es: Dictionary = {
     relatedProject: 'Proyecto relacionado',
     readCaseStudy: 'Leer caso',
     watchVideo: 'Ver video',
-    demo: 'Demo',
+    demo: 'Ir a la página',
     repo: 'Repo',
   },
   labels: {
@@ -90,12 +90,12 @@ export const es: Dictionary = {
   },
   home: {
     hero: {
-      title: 'Desarrollador fullstack listo para producción: UX Flutter-first, APIs confiables e integraciones reales.',
+      title: 'Diseño y construyo sistemas empresariales completos que conectan operación, datos e integraciones reales',
       subline: 'Ingeniería orientada a negocio: arquitectura, ejecución y resultados.',
       constellationTitle: 'Mi stack',
       paragraph:
         '15 años en TI entre soporte, operaciones, QA, desarrollo y arquitectura de sistemas. Construyo software que funciona bajo presión operativa.',
-      proofChips: ['Flutter-first', 'Fullstack', 'Integraciones ERP/POS', 'Offline-ready'],
+      proofChips: ['Fullstack', 'Integraciones ERP/POS', 'Offline-First'],
     },
     pillars: {
       title: 'Lo que recibes al trabajar conmigo',
@@ -127,13 +127,13 @@ export const es: Dictionary = {
       title: 'Resumen rápido',
       metrics: [
         { value: '15+', label: 'Años en TI' },
-        { value: '9 sedes', label: 'Rollouts multi-sucursal' },
+        { value: '10+', label: 'Sistemas entregados a operación real' },
         { value: 'ERP/POS', label: 'Integraciones en producción' },
         { value: 'Remoto', label: 'Colaboración internacional' },
       ],
     },
     finalCta: {
-      title: '¿Buscas un ingeniero que diseñe y entregue end-to-end?',
+      title: '¿Necesitas ayuda para llevar un producto de principio a fin?',
     },
   },
   systems: {
@@ -257,19 +257,19 @@ export const es: Dictionary = {
   },
   projects: {
     hero: {
-      title: 'Proyectos seleccionados para operación real.',
-      subline: 'Casos concretos con decisiones de arquitectura y resultados medibles.',
+      title: 'Una muestra de proyectos en producción.',
+      subline: 'Casos reales que reflejan parte de la experiencia que he construido en desarrollo e integración de sistemas.',
     },
   },
   contact: {
     hero: {
       title: 'Hablemos.',
-      subline: 'Remoto | Internacional | Fullstack (Flutter-first)',
+      subline: 'Remoto | Internacional | Fullstack',
     },
     linksTitle: 'Canales directos',
     availability: {
       text: 'Disponible para roles remotos full-time, contratos y consultoría de alta responsabilidad.',
-      chips: ['Fullstack', 'Flutter', 'Integraciones', 'Automatización'],
+      chips: ['Fullstack', 'Integraciones', 'Automatización'],
     },
   },
   notFound: {

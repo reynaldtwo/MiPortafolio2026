@@ -10,8 +10,8 @@ export const projects: Project[] = [
       es: 'Quantix | Core Multiempresa para Inventario y Facturación',
     },
     oneLiner: {
-      en: 'C# and .NET system on Azure SQL for operating multiple companies and branches from one shared platform.',
-      es: 'Sistema en C# y .NET sobre Azure SQL para operar múltiples empresas y sucursales desde una sola plataforma.',
+      en: 'Centralized inventory and billing platform that lets multiple companies and branches operate from a single system, eliminating fragmented data and duplicated administration.',
+      es: 'Plataforma centralizada de inventario y facturación que permite a múltiples empresas y sucursales operar desde un solo sistema, eliminando datos fragmentados y administración duplicada.',
     },
     problem: {
       en: 'Organizations with multiple companies and branches needed inventory, billing, reporting, and configuration under one operational core without fragmenting data or setup.',
@@ -272,206 +272,107 @@ export const projects: Project[] = [
     },
   },
   {
-    id: 'qa-release-control-plane',
+    id: 'nicafinanzas',
     featured: true,
-    categories: ['backend', 'automation'],
+    categories: ['flutter', 'backend', 'integrations'],
     title: {
-      en: 'QA and Release Control Plane',
-      es: 'Plano de Control para QA y Releases',
+      en: 'NicaFinance | Web-first Financial Education Platform',
+      es: 'NicaFinance | Plataforma Web-first de Educación Financiera',
     },
     oneLiner: {
-      en: 'Operational quality workflow that connects evidence, approvals, and release readiness.',
-      es: 'Flujo de calidad que conecta evidencia, aprobaciones y readiness de release.',
+      en: 'Applied financial education platform helping people in Nicaragua understand their salaries, loans, and labor rights through practical tools and AI assistance.',
+      es: 'Plataforma de educación financiera aplicada que ayuda a personas en Nicaragua a entender su salario, préstamos y derechos laborales mediante herramientas prácticas y asistencia con IA.',
     },
     problem: {
-      en: 'Quality signals were scattered across manual notes, chats, and disconnected reports.',
-      es: 'Las señales de calidad estaban dispersas entre notas manuales, chats y reportes desconectados.',
+      en: 'Traditional financial tools often deliver results without explanation, leaving users alone to make decisions that can have serious economic consequences.',
+      es: 'Las herramientas financieras tradicionales suelen entregar resultados sin explicación, dejando al usuario solo frente a decisiones que pueden tener consecuencias económicas serias.',
     },
-    roles: [
-      { en: 'QA process design', es: 'Diseño de proceso QA' },
-      { en: 'Automation workflows', es: 'Flujos de automatización' },
-      { en: 'Release governance', es: 'Gobernanza de release' },
-    ],
-    stack: ['ASP.NET Core', 'SQL Server', 'n8n', 'Power BI', 'Teams'],
+    roles: [],
+    stack: ['Flutter', 'Dart', 'Hono', 'Cloudflare Workers', 'OpenAI'],
     architecture: [
       {
-        en: 'Unified release checklist and evidence capture by environment.',
-        es: 'Checklist unificado de release y captura de evidencia por ambiente.',
+        en: 'Feature-first Flutter frontend with a reusable design system and responsive shell.',
+        es: 'Frontend en Flutter feature-first con sistema de diseño reutilizable y shell responsive.',
       },
       {
-        en: 'Automated alerts for pending approvals, blocked defects, and retests.',
-        es: 'Alertas automáticas para aprobaciones pendientes, defectos y re-pruebas.',
+        en: 'Decoupled edge backend running on Cloudflare Workers (TypeScript + Hono).',
+        es: 'Backend desacoplado en el edge ejecutándose en Cloudflare Workers (TypeScript + Hono).',
       },
       {
-        en: 'Audit trail for defects, fixes, and go-live decisions.',
-        es: 'Traza auditable para defectos, correcciones y decisiones de salida.',
+        en: 'Structured JSON AI integration using OpenAI Responses API for safe contextual advice.',
+        es: 'Integración estructurada de IA mediante OpenAI API para consejos contextuales.',
       },
     ],
     impact: [
       {
-        en: 'Higher release confidence with clearer go/no-go visibility.',
-        es: 'Mayor confianza en releases con visibilidad clara para go/no-go.',
+        en: 'Democratizes practical financial education for users with limited economic expertise.',
+        es: 'Democratiza la educación financiera práctica para usuarios con poca experiencia económica.',
       },
       {
-        en: 'Faster coordination between QA, development, and operations.',
-        es: 'Coordinación más rápida entre QA, desarrollo y operaciones.',
+        en: 'Reduces information asymmetry in sensitive decisions like loans or severances.',
+        es: 'Reduce asimetrías de información en decisiones sensibles como préstamos o liquidaciones.',
       },
       {
-        en: 'Reduced avoidable regressions through explicit quality gates.',
-        es: 'Reducción de regresiones evitables mediante gates explícitos de calidad.',
+        en: 'Proactively detects warning signs in debts and potentially abusive contracts.',
+        es: 'Detecta proactivamente banderas rojas en deudas y contratos potencialmente abusivos.',
       },
     ],
     caseStudy: {
       context: {
-        en: 'Created for teams delivering frequent changes with strict continuity expectations.',
-        es: 'Creado para equipos con cambios frecuentes y exigencia alta de continuidad.',
+        en: 'A digital product built specifically for Nicaragua to close the gap between numbers and understanding on loans, salaries, and severances.',
+        es: 'Producto digital diseñado específicamente para Nicaragua con el objetivo de cerrar la brecha entre números y entendimiento en préstamos, salarios y liquidaciones.',
       },
       constraints: [
         {
-          en: 'Needed immediate adoption without forcing heavy enterprise tooling.',
-          es: 'Se requería adopción inmediata sin imponer tooling enterprise pesado.',
+          en: 'Users often lacked the technical or financial background to interpret raw calculation results safely.',
+          es: 'Los usuarios usualmente no tienen la experiencia técnica o económica para interpretar resultados financieros crudos.',
         },
         {
-          en: 'Mixed technical profiles across stakeholders.',
-          es: 'Perfiles técnicos mixtos entre stakeholders.',
+          en: 'Needed a robust local context specific to Nicaraguan payroll, labor rights, and banking practices.',
+          es: 'Se requería un contexto local robusto y específico sobre nómina, derechos laborales y sector bancario en Nicaragua.',
         },
       ],
       solution: [
         {
-          en: 'Built lightweight governance with automation-first reminders and escalations.',
-          es: 'Se construyó gobernanza ligera con recordatorios y escalaciones automatizadas.',
+          en: 'Built contextual calculators that guide the user explaining risks and key points alongside the numbers.',
+          es: 'Se construyeron calculadoras contextuales que guían al usuario explicando riesgos y puntos clave junto a los números.',
         },
         {
-          en: 'Standardized release evidence and linked it to approval checkpoints.',
-          es: 'Se estandarizó evidencia de release y se vinculó a checkpoints de aprobación.',
+          en: 'Integrated an AI assistant to clarify specific doubts and steer the user toward specific internal tools.',
+          es: 'Se integró un asistente con IA para resolver dudas específicas y orientar al usuario hacia herramientas puntuales internas.',
         },
       ],
       decisions: [
         {
-          en: 'Enforced quality by sensible defaults, not process bureaucracy.',
-          es: 'Se reforzó calidad con defaults útiles, no con burocracia.',
+          en: 'A serverless Edge architecture was chosen for the backend to ensure low latency and scalable OpenAI integration.',
+          es: 'Se eligió una arquitectura Edge (Serverless) para el backend garantizando latencia ultrabaja y la escalabilidad con OpenAI.',
         },
         {
-          en: 'Made release status visible for both technical and business teams.',
-          es: 'Se hizo visible el estado de release para negocio y equipo técnico.',
+          en: 'Offline-first principles and local persistence were favored to keep session data out of external databases.',
+          es: 'Se favoreció principios offline-first y persistencia local para mantener fuera el estado de bases de datos externas.',
         },
       ],
       outcomes: [
         {
-          en: 'Release readiness became measurable before production deployment.',
-          es: 'La readiness de release se volvió medible antes de producción.',
+          en: 'The platform is fully live, transforming complex calculations into actionable, safe advice.',
+          es: 'La plataforma operando en vivo ha logrado traducir cálculos complejos en consejos asimilables y aplicables.',
+        },
+        {
+          en: 'Demonstrates robust end-to-end execution, spanning from the UI design to AI and Edge computing.',
+          es: 'Se demostró un despliegue sólido end-to-end; abarcando desde UI hasta integraciones complejas en el Edge.',
         },
       ],
       lessons: [
         {
-          en: 'Simple and clear workflows outperform complex ones under delivery pressure.',
-          es: 'Flujos simples y claros superan a los complejos bajo presión de entrega.',
+          en: 'Developing products with real social utility proves stronger engineering judgment than merely tracking latest hypes.',
+          es: 'Desarrollar productos con impacto social genuino comprueba una disciplina mayor que seguir modas tecnológicas.',
         },
       ],
     },
     links: {
-      caseStudyAnchor: 'qa-release-control-plane',
-      demo: 'https://github.com/',
+      caseStudyAnchor: 'nicafinanzas',
+      demo: 'https://nicafinanzas.com/',
     },
   },
-  {
-    id: 'enterprise-integration-hub',
-    featured: false,
-    categories: ['backend', 'integrations', 'automation'],
-    title: {
-      en: 'Enterprise Integration Hub',
-      es: 'Hub Empresarial de Integraciones',
-    },
-    oneLiner: {
-      en: 'Integration layer connecting ERP, POS, messaging channels, and automation bots.',
-      es: 'Capa de integración que conecta ERP, POS, canales de mensajería y bots de automatización.',
-    },
-    problem: {
-      en: 'Transactional and operational signals lived in isolated systems with manual coordination.',
-      es: 'Señales transaccionales y operativas vivían en sistemas aislados con coordinación manual.',
-    },
-    roles: [
-      { en: 'Integration architecture', es: 'Arquitectura de integraciones' },
-      { en: 'Automation design', es: 'Diseño de automatización' },
-      { en: 'Operational support model', es: 'Modelo de soporte operativo' },
-    ],
-    stack: ['ASP.NET Core', 'Business Central', 'LS Central', 'n8n', 'OpenAI API', 'Teams'],
-    architecture: [
-      {
-        en: 'Event-driven integration flows with safe retries and delivery tracking.',
-        es: 'Flujos orientados a eventos con reintentos seguros y trazabilidad de entrega.',
-      },
-      {
-        en: 'Notification routing by severity and business context.',
-        es: 'Enrutamiento de notificaciones por severidad y contexto de negocio.',
-      },
-      {
-        en: 'Automation bots for repetitive triage and escalations.',
-        es: 'Bots de automatización para triage repetitivo y escalaciones.',
-      },
-    ],
-    impact: [
-      {
-        en: 'Lower manual coordination load across technical and business teams.',
-        es: 'Menor carga de coordinación manual entre equipos técnicos y de negocio.',
-      },
-      {
-        en: 'Faster reaction time to operational incidents.',
-        es: 'Menor tiempo de reacción ante incidentes operativos.',
-      },
-      {
-        en: 'Clearer traceability from event origin to final action.',
-        es: 'Trazabilidad más clara desde origen del evento hasta acción final.',
-      },
-    ],
-    caseStudy: {
-      context: {
-        en: 'Designed for operations where speed and traceability are both critical.',
-        es: 'Diseñado para operaciones donde velocidad y trazabilidad son críticas.',
-      },
-      constraints: [
-        {
-          en: 'Different vendors and protocols with uneven reliability assumptions.',
-          es: 'Proveedores y protocolos distintos con supuestos desiguales de confiabilidad.',
-        },
-        {
-          en: 'Needed low-friction adoption by non-technical users as well.',
-          es: 'Se necesitaba adopción de baja fricción incluso para usuarios no técnicos.',
-        },
-      ],
-      solution: [
-        {
-          en: 'Created normalization and validation layer before cross-system dispatch.',
-          es: 'Se creó una capa de normalización y validación antes del despacho cross-system.',
-        },
-        {
-          en: 'Linked bot actions with trace IDs for operational auditing.',
-          es: 'Se enlazaron acciones de bots con trace IDs para auditoría operativa.',
-        },
-      ],
-      decisions: [
-        {
-          en: 'Mandatory idempotency and traceability from first release.',
-          es: 'Idempotencia y trazabilidad obligatorias desde la primera versión.',
-        },
-      ],
-      outcomes: [
-        {
-          en: 'Cross-system visibility enabled faster and safer daily decisions.',
-          es: 'La visibilidad cross-system permitió decisiones diarias más rápidas y seguras.',
-        },
-      ],
-      lessons: [
-        {
-          en: 'Integration quality is defined by failure handling, not only happy paths.',
-          es: 'La calidad de integración se define por el manejo de fallos, no solo por happy paths.',
-        },
-      ],
-    },
-    links: {
-      caseStudyAnchor: 'enterprise-integration-hub',
-      demo: 'https://github.com/',
-      repo: 'https://github.com/',
-    },
-  },
+
 ];

@@ -1,6 +1,5 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
-import ContactLinksSection from '../../components/sections/ContactLinksSection.astro';
 import ContactHeroSection from '../../components/sections/ContactHeroSection.astro';
 import { getDictionary } from '../../data/i18n';
 
@@ -18,5 +17,4 @@ const pathname = '/es/contact/';
   hideFooter={true}
 >
   <ContactHeroSection dict={dict} />
-  <ContactLinksSection dict={dict} />
 </BaseLayout>
