@@ -265,7 +265,7 @@ export const projects: Project[] = [
         en: 'Visual walkthrough of the operational flow used to review statement shortages before posting.',
         es: 'Recorrido visual del flujo operativo utilizado para revisar insuficiencias del statement antes del posteo.',
       },
-      embedUrl: 'https://www.youtube-nocookie.com/embed/FL7aUb48rls?start=10&rel=0&modestbranding=1',
+      embedUrl: 'https://www.youtube-nocookie.com/embed/UasYj97IlyM?rel=0&modestbranding=1',
     },
     links: {
       caseStudyAnchor: 'ls-central-statement-insufficiency-control',

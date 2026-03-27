@@ -58,7 +58,7 @@ const calendlyIconPath =
 
       <div class="actions">
         <span class="nav-entrance" style="--entrance-order: 3"><LanguageSwitch locale={locale} pathname={pathname} label={dict.labels.languageSwitch} /></span>
-        <span class="nav-entrance" style="--entrance-order: 2"><ThemeToggle label={dict.labels.themeToggle} /></span>
+        <span class="nav-entrance" style="--entrance-order: 2; display: none;"><ThemeToggle label={dict.labels.themeToggle} /></span>
         <div class="desktop-cta">
           <span class="nav-entrance" style="--entrance-order: 1">
             <Button
@@ -160,7 +160,7 @@ const calendlyIconPath =
       </div>
       <div class="mobile-controls">
         <LanguageSwitch locale={locale} pathname={pathname} label={dict.labels.languageSwitch} />
-        <ThemeToggle label={dict.labels.themeToggle} />
+        <div style="display: none;"><ThemeToggle label={dict.labels.themeToggle} /></div>
       </div>
     </div>
   </div>
